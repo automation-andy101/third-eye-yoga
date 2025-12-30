@@ -1,5 +1,6 @@
 import classes from "@/data/classes.json";
 import ClassCard from "/components/ClassCard";
+import Heading from "@/components/Heading";
 
 
 export default function Home() {
