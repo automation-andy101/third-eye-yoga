@@ -12,7 +12,7 @@ const RoomCard = ({ yogaClass }) => {
         <div className="bg-white shadow rounded-lg p-4 mt-4
                 flex flex-col sm:flex-row
                 items-start
-                sm:gap-6"
+                gap-4 sm:gap-10"
         >
             {/* Duration  */}
             <div className="flex flex-col space-y-3 shrink-0">
@@ -35,7 +35,7 @@ const RoomCard = ({ yogaClass }) => {
             </div>
             
             {/* Class description  */}
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 max-w-lg sm:max-w-xl space-y-2">
                 <h4 className="text-lg font-semibold">{yogaClass.title}</h4>
                 <p className="text-sm font-semibold text-gray-800">
                     {yogaClass.teacher_name}
@@ -46,12 +46,12 @@ const RoomCard = ({ yogaClass }) => {
             </div>
 
             {/* Location */}
-            <div className="shrink-0 w-40">
+            <div className="shrink-0 w-48 self-center sm:ml-6">
                 <h4 className="text-sm font-semibold">{yogaClass.location}</h4>
             </div>
 
             {/* Book */}
-            <div className="shrink-0 self-start">
+            <div className="shrink-0 self-center">
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded
                             w-32 text-center hover:bg-blue-700">
