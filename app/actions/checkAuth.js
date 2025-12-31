@@ -18,25 +18,20 @@ async function checkAuth() {
   
   try {
     const { account, teams } = await createSessionClient(sessionCookie.value);
-    const user = await account.get();    
-    const memberships = await teams.listMemberships(ADMIN_TEAM_ID);
+    const user = await account.get();
+    let memberships;
+    let isAdministrator;
 
-    // Fetch team memberships
-    // const memberships = await account.listMemberships();
-    console.log("ANDREW BALL SACK - ");
-    console.log("memberships - " + memberships);
-    const isAdministrator = memberships.memberships.some(
-      (team) => team.teamId === ADMIN_TEAM_ID && team.status === 'active'
-    );
+    try {
+      memberships = await teams.listMemberships(ADMIN_TEAM_ID);
 
-    console.log("ANDREW BALL SACK 2 - ");
-    console.log("memberships - " + isAdministrator);
-
-    // const isAdministrator = memberships.memberships.some(
-    //   (m) => m.teamId === process.env.ADMIN_TEAM_ID && m.confirm
-    // );
-
-    console.log("ANDREW2 - " + isAdministrator);
+      // Fetch team memberships
+      isAdministrator = memberships.memberships.some(
+        (team) => team.teamId === ADMIN_TEAM_ID
+      );
+    } catch (error) {
+      isAdministrator = false;
+    }
 
     return {
       isAuthenticated: true,
@@ -49,7 +44,7 @@ async function checkAuth() {
     };
 
   } catch (error) {
-    console.error("ACCOUNT.GET ERROR:", error);
+    console.error("Get account error:", error);
     return {
       isAuthenticated: false,
       isAdmin: false,
