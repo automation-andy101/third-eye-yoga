@@ -1,0 +1,52 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import checkAuth from "@/app/actions/checkAuth";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {  
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+
+    // console.log("HELLO WORLD 1");
+    // console.log(isAuthenticated);
+    // console.log("HELLO WORLD 2");
+    // console.log(isAdmin);
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+            const { isAuthenticated, isAdmin, user } = await checkAuth();
+            setIsAuthenticated(isAuthenticated);
+            setIsAdmin(isAdmin);
+            setCurrentUser(user);
+                console.log("HELLO WORLD 3");
+                console.log(isAuthenticated);
+        }
+
+        checkAuthentication();
+    }, []);
+
+
+    return (
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            isAdmin,
+            setIsAuthenticated,
+            setIsAdmin,
+            currentUser,
+            setCurrentUser
+        }}>
+            { children }
+        </AuthContext.Provider>
+    )
+};
+
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+   
+    if (!context) {
+        throw new Error("useAuth MUST be used within an AuthProvider");
+    }
+
+    return context;
+};

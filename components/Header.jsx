@@ -1,41 +1,31 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-// import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "/assets/images/logo_1.png";
 import { FaUser, FaSignInAlt, FaSignOutAlt, FaBuilding } from "react-icons/fa";
 import { toast } from "react-toastify";
-// import destroySession from "/app/actions/destroySession";
-import checkAuth from "/app/actions/checkAuth";
-// import { useAuth } from "/context/authContext";
+import destroySession from "/app/actions/destroySession";
+import { useAuth } from "/context/authContext";
 
 const Header = () => {
     const router = useRouter();
-    const isAuthenticated = false;
-    // const { isAuthenticated, setIsAuthenticated } = useAuth();
-    // const [isAuthenticated, setIsAuthenticated] = useState(null);
+    const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin, currentUser } = useAuth();
 
-    // useEffect(() => {
-    //     const fetchAuthStatus = async () => {
-    //         const result = await checkAuth();
-    //         setIsAuthenticated(result.isAuthenticated);
-    //     }
-
-    //     fetchAuthStatus();
-    // }, []);
+    console.log("isAuthenicated value - " + isAuthenticated)
 
     const handleLogout = async () => {
         const { success, error } = await destroySession();
 
         if (success) {
             setIsAuthenticated(false);
+            setIsAdmin(false);
             router.push("/login");
         } else {
             toast.error(error);
         }
-    }
+    };
 
     return (
             <header className="bg-gray-100">
@@ -58,7 +48,7 @@ const Header = () => {
                                         Class Schedule
                                     </Link>
 
-                                    {isAuthenticated && (
+                                    {isAdmin && (
                                         <>
                                             <Link
                                                 href="/bookings"
@@ -109,11 +99,12 @@ const Header = () => {
                                         <Link href="/rooms/my">
                                             <FaBuilding className="inline mr-1" /> My Bookings
                                         </Link>
+                                        <button onClick={handleLogout} className="mx-3 text-gray-800 hover:text-gray-600">
+                                            <FaSignOutAlt className="inline mr-1" /> Sign Out
+                                        </button>
                                     </>
                                 )}
-                                <button onClick={handleLogout} className="mx-3 text-gray-800 hover:text-gray-600">
-                                    <FaSignOutAlt className="inline mr-1" /> Sign Out
-                                </button>
+                                
                             </div>
                         </div>
                     </div>
