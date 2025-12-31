@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { toast } from 'react-toastify';
 import createSession from '../actions/createSession';
@@ -10,19 +10,27 @@ import { useAuth } from '/context/authContext';
 
 const LoginPage = () => {
   const [state, formAction] = useFormState(createSession, {});
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
-
+  const { refreshAuth } = useAuth();
   const router = useRouter();
+  const hasHandledSuccess = useRef(false);
 
   useEffect(() => {
-    if (state.error) toast.error(state.error);
-    if (state.success) {
-      toast.success('Logged in successfully!');
-      setIsAuthenticated(true);
-      console.log('EGGS - ' + isAuthenticated);
-      router.push('/');
-    }
-  }, [state]);
+    const handleLogin = async () => {
+      if (state?.error) {
+        toast.error(state.error);
+        return;
+      }
+
+      if (state?.success && !hasHandledSuccess.current) {
+        hasHandledSuccess.current = true;
+        toast.success('Logged in successfully!');
+        await refreshAuth();
+        router.push('/');
+      }
+    };
+
+    handleLogin();
+  }, [state, refreshAuth, router]);
 
   return (
     <div className='flex items-center justify-center'>

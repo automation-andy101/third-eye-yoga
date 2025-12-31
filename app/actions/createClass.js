@@ -1,0 +1,64 @@
+"use server";
+
+import { createAdminClient } from "/config/appwrite";
+import checkAuth from "./checkAuth";
+import { ID } from "node-appwrite";
+import { revalidatePath } from "next/cache";
+
+
+async function createClass(previousState, formData) {
+    const { databases } = await createAdminClient();
+
+    try {
+        const { user, isAdmin } = await checkAuth();
+
+
+        if (!user) {
+            return {
+                error: "You must be logged in to create a class"
+            }
+        }
+
+        if (!isAdmin) {
+            return { error: 'You must belong to the admin team to create a class' };
+        }
+
+        // Create a class
+        const newRoom = await databases.createDocument(
+            process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
+            process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_CLASSES,
+            ID.unique(),
+            {
+                date: formData.get('date'),
+                start_time: formData.get('start_time'),
+                end_time: formData.get('end_time'),
+                duration: formData.get('duration'),
+                title: formData.get('title'),
+                description: formData.get('description'),
+                teacher_id: formData.get('teacher_id'),
+                teacher_name: formData.get('teacher_name'),
+                capacity: formData.get('capacity'),
+                booked_count: formData.get('booked_count'),
+                location: formData.get('location'),
+                price: formData.get('price'),
+                is_active: formData.get('is_active'),
+            }
+        );
+
+        revalidatePath("/", "/layout");
+
+        return {
+            success: true
+        }
+
+    } catch (error) {
+        const errorMessage = error.response.message || "An unexpected error has occurred!";
+
+        return {
+            error: errorMessage
+        }
+    }
+}
+
+
+export default createClass;

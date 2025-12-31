@@ -13,8 +13,6 @@ const Header = () => {
     const router = useRouter();
     const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin, currentUser } = useAuth();
 
-    console.log("isAuthenicated value - " + isAuthenticated)
-
     const handleLogout = async () => {
         const { success, error } = await destroySession();
 
@@ -51,13 +49,7 @@ const Header = () => {
                                     {isAdmin && (
                                         <>
                                             <Link
-                                                href="/bookings"
-                                                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                            >
-                                                Bookings
-                                            </Link>
-                                            <Link
-                                                href="/rooms/add"
+                                                href="/classes/add"
                                                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                             >
                                                 Add Class
@@ -68,6 +60,12 @@ const Header = () => {
                                                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                             >
                                                 Add Teacher
+                                            </Link>
+                                            <Link
+                                                href="/bookings"
+                                                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                            >
+                                                Bookings
                                             </Link>
                                         </>
                                     )}
@@ -119,16 +117,10 @@ const Header = () => {
                             Rooms
                         </Link>
 
-                        {isAuthenticated && (
+                        {isAdmin && (
                             <>
                                 <Link
-                                    href="/bookings"
-                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                >
-                                    Bookings
-                                </Link>
-                                <Link
-                                    href="/rooms/add"
+                                    href="/classes/add"
                                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                 >
                                     Add Class
@@ -138,6 +130,12 @@ const Header = () => {
                                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                 >
                                     Add Teacher
+                                </Link>
+                                <Link
+                                    href="/bookings"
+                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                >
+                                    Bookings
                                 </Link>
                             </>
                         )}

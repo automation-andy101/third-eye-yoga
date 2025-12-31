@@ -8,23 +8,23 @@ export const AuthProvider = ({ children }) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
 
-    // console.log("HELLO WORLD 1");
-    // console.log(isAuthenticated);
-    // console.log("HELLO WORLD 2");
-    // console.log(isAdmin);
-
     useEffect(() => {
         const checkAuthentication = async () => {
             const { isAuthenticated, isAdmin, user } = await checkAuth();
             setIsAuthenticated(isAuthenticated);
             setIsAdmin(isAdmin);
             setCurrentUser(user);
-                console.log("HELLO WORLD 3");
-                console.log(isAuthenticated);
         }
 
         checkAuthentication();
     }, []);
+
+    const refreshAuth = async () => {
+        const { isAuthenticated, isAdmin, user } = await checkAuth();
+        setIsAuthenticated(isAuthenticated);
+        setIsAdmin(isAdmin);
+        setCurrentUser(user);
+    };
 
 
     return (
@@ -34,7 +34,8 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated,
             setIsAdmin,
             currentUser,
-            setCurrentUser
+            setCurrentUser,
+            refreshAuth
         }}>
             { children }
         </AuthContext.Provider>
