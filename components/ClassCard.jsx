@@ -5,23 +5,26 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import getTeacherById from "@/app/actions/getTeacherById";
 
-const RoomCard = ({ yogaClass }) => {
-    console.log("ANDREWSHORT - " + yogaClass.teacher_id)
-    const [teacherName, setTeacherName] = useState("");
-    const [teacherImageId, setTeacherImageId] = useState("");
+const ClassCard = ({ yogaClass }) => {
+    const [time, setTime] = useState("");
 
     useEffect(() => {
-        getTeacherById(yogaClass.teacher_id).then((t) => {
-            setTeacherName(t?.name || "Unknown");
-            setTeacherImageId(t?.image_id || "Unknown");
-        });
-    }, [yogaClass.teacher_id]);
+        const date = new Date(yogaClass.start_at);
+        setTime(
+            date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            })
+        );
+    }, [yogaClass.start_at]);
 
     const bucketId = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_TEACHERS;
     const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
 
-    const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${teacherImageId}/view?project=${projectId}`;
-    const imageSrc = yogaClass.teacher_id ?  imageUrl : "/images/no-image.jpg";
+    const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${yogaClass.teacher.image_id}/view?project=${projectId}`;
+    const imageSrc = yogaClass.teacher.image_id
+                ? `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${yogaClass.teacher.image_id}/view?project=${projectId}`
+                : "/images/no-image.jpg";
 
     return (
         <div className="bg-white shadow rounded-lg p-4 mt-4
@@ -32,13 +35,8 @@ const RoomCard = ({ yogaClass }) => {
             {/* Duration  */}
             <div className="flex flex-col space-y-3 shrink-0">
                 <div>
-                    <h4 className="text-lg font-semibold">
-                        {new Date(yogaClass.start_at).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                        })}
-                    </h4>
-                    <p className="text-sm text-gray-600 font-semibold text-gray-800">
+                    <h4 className="text-lg font-semibold">{time}</h4>
+                    <p className="text-sm font-semibold text-gray-800">
                         {yogaClass.duration} min
                     </p>
                 </div>
@@ -46,7 +44,7 @@ const RoomCard = ({ yogaClass }) => {
                 <div className="w-20 h-20">
                     <Image
                         src={imageSrc}
-                        alt={teacherName}
+                        alt={yogaClass.teacher.name || "Teacher"}
                         className="w-full h-full object-cover rounded-full"
                         width={200}
                         height={200}
@@ -58,7 +56,7 @@ const RoomCard = ({ yogaClass }) => {
             <div className="flex-1 max-w-lg sm:max-w-xl space-y-2">
                 <h4 className="text-lg font-semibold">{yogaClass.title}</h4>
                 <p className="text-sm font-semibold text-gray-800">
-                    {teacherName}
+                    {yogaClass.teacher.name}
                 </p>
                 <p className="text-sm text-gray-600 line-clamp-4">
                     {yogaClass.description}
@@ -82,4 +80,4 @@ const RoomCard = ({ yogaClass }) => {
   )
 }
 
-export default RoomCard
+export default ClassCard

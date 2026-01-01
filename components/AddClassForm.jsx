@@ -82,7 +82,7 @@ const AddClassForm = ({ teachers }) => {
 
                 <div className="mb-4">
                     <label htmlFor="duration" className="block text-gray-700 font-bold mb-2">
-                        Duration
+                        Duration (mins)
                     </label>
                     <input
                         type="number"
@@ -126,7 +126,7 @@ const AddClassForm = ({ teachers }) => {
                     <label
                         htmlFor="price_per_hour"
                         className="block text-gray-700 font-bold mb-2">
-                        Price
+                        Price (£)
                     </label>
                     <input
                         type="number"

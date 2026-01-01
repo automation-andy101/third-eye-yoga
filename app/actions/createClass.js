@@ -12,7 +12,6 @@ async function createClass(previousState, formData) {
     try {
         const { user, isAdmin } = await checkAuth();
 
-
         if (!user) {
             return {
                 error: "You must be logged in to create a class"
@@ -24,21 +23,21 @@ async function createClass(previousState, formData) {
         }
 
         // Create a class
-        const newRoom = await databases.createDocument(
+        const newClass = await databases.createDocument(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
             process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_CLASSES,
             ID.unique(),
             {
-                start_at: formData.get('start_at'),
-                duration: formData.get('duration'),
+                start_at: new Date(formData.get('start_at')).toISOString(),
+                duration: Number(formData.get('duration')),
                 title: formData.get('title'),
                 description: formData.get('description'),
                 teacher_id: formData.get('teacher_id'),
-                capacity: formData.get('capacity'),
-                booked_count: formData.get('booked_count'),
+                capacity: Number(formData.get('capacity')),
+                booked_count: 0,
                 location: formData.get('location'),
-                price: formData.get('price'),
-                is_active: formData.get('is_active'),
+                price: Number(formData.get('price')),
+                is_active: formData.get('is_active') === 'true',
             }
         );
 
@@ -49,6 +48,7 @@ async function createClass(previousState, formData) {
         }
 
     } catch (error) {
+        console.log("BALL SACK!!!!!!! - " + error.response)
         const errorMessage = error.response.message || "An unexpected error has occurred!";
 
         return {
