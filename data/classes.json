@@ -1,14 +1,11 @@
 [
   {
     "$id": 1,
-    "date": "2025-12-31",
-    "start_time": "18:00",
-    "end_time": "19:00",
+    "start_at": "2026-01-10T18:00:00.000Z",
     "duration": 60,
     "title": "Vinyasa Flow",
     "description": "Hot Power is a new class for summer 2022 designed to complement our other hot classes, Hot 60 and Hot Flow. This sweaty, energetic class is based on our hot60 sequence with added vinyasas (movement sequences), as well as core and strength focus poses to increase stamina and build muscle. This is a class for all abilities offering modifications or next stages to poses your choice.",
-    "teacher_id": "6953c8450033ff3e3a10",
-    "teacher_name": "Andy Short",
+    "teacher_id": "695678ba002b26679605",
     "capacity": 10,
     "booked_count": 0,
     "location": "Studio A",
