@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import getTeacherById from "@/app/actions/getTeacherById";
 
 const ClassCard = ({ yogaClass }) => {
+    console.log("HELLO WORLD - " + JSON.stringify(yogaClass.$id))
     const [time, setTime] = useState("");
 
     useEffect(() => {
@@ -32,6 +33,8 @@ const ClassCard = ({ yogaClass }) => {
                 items-start
                 gap-4 sm:gap-10"
         >
+            <input type="hidden" name="class_id" value={yogaClass.$id} />
+
             {/* Duration  */}
             <div className="flex flex-col space-y-3 shrink-0">
                 <div>
@@ -71,6 +74,7 @@ const ClassCard = ({ yogaClass }) => {
             {/* Book */}
             <div className="shrink-0 self-center">
                 <button
+                    onClick={() => Router.push(`/checkout/${yogaClass.$id}`)}
                     className="bg-blue-500 text-white px-4 py-2 rounded
                             w-32 text-center hover:bg-blue-700">
                     Book

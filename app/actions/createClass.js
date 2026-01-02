@@ -48,7 +48,6 @@ async function createClass(previousState, formData) {
         }
 
     } catch (error) {
-        console.log("BALL SACK!!!!!!! - " + error.response)
         const errorMessage = error.response.message || "An unexpected error has occurred!";
 
         return {
