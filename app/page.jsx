@@ -10,6 +10,5 @@ export default function Page() {
         <WeekSchedule getClassesForDay={getClassesForDay} />
       </div>
     </div>
-    
   )
 }

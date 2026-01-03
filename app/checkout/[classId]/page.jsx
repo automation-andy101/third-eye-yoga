@@ -21,25 +21,31 @@ export default async function CheckoutPage({ params }) {
             <div className="border rounded-lg p-6 space-y-4 bg-white shadow-sm">
                 <div>
                     <h2 className="text-lg font-semibold text-gray-800">
-                    Class
+                        Yoga Class
                     </h2>
-                    <p className="text-gray-700 mt-1">{yogaClass.title}</p>
+                    <p className="text-gray-700 mt-1"><em>{yogaClass.title}</em></p>
                 </div>
 
                 <div>
                     <h2 className="text-lg font-semibold text-gray-800">
-                    Instructor
+                        Instructor
                     </h2>
-                    <p className="text-gray-700 mt-1">{yogaClass.teacher.name}</p>
+                    <p className="text-gray-700 mt-1"><em>{yogaClass.teacher.name}</em></p>
                 </div>
-
-                <p className="text-sm text-gray-600">
-                    {new Date(yogaClass.start_at).toLocaleString([], {
-                        weekday: "long",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                    })}
-                </p>
+                <div>
+                    <h2 className="text-lg font-semibold text-gray-800">
+                        Date & Time
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                        <em>
+                            {new Date(yogaClass.start_at).toLocaleString([], {
+                                weekday: "long",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            })}
+                        </em>
+                    </p>
+                </div>
 
                 <div className="flex justify-between items-center pt-3 border-t mt-3">
                     <span className="text-sm text-gray-600">Total</span>

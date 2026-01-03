@@ -47,27 +47,59 @@ const Header = () => {
                                     </Link>
 
                                     {isAdmin && (
-                                        <>
-                                            <Link
-                                                href="/classes/add"
-                                                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                            >
-                                                Add Class
-                                            </Link>
+                                        // <>
+                                        //     <Link
+                                        //         href="/classes/add"
+                                        //         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                        //     >
+                                        //         Add Class
+                                        //     </Link>
 
-                                            <Link
-                                                href="/rooms/add"
-                                                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                            >
-                                                Add Teacher
-                                            </Link>
-                                            <Link
-                                                href="/bookings"
-                                                className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                            >
-                                                Bookings
-                                            </Link>
-                                        </>
+                                        //     <Link
+                                        //         href="/rooms/add"
+                                        //         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                        //     >
+                                        //         Add Teacher
+                                        //     </Link>
+                                        //     <Link
+                                        //         href="/bookings"
+                                        //         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                        //     >
+                                        //         Bookings
+                                        //     </Link>
+                                        // </>
+                                        <div className="relative group">
+                                            {/* Admin trigger */}
+                                            <span className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
+                                                Admin
+                                            </span>
+
+                                            {/* Dropdown */}
+                                            <div className="absolute left-0 top-full z-10 hidden w-48 pt-2 group-hover:block">
+                                                <div className="rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                                                    <Link
+                                                        href="/admin"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        Dashboard
+                                                    </Link>
+
+                                                    <Link
+                                                        href="/admin/teachers"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        Teachers
+                                                    </Link>
+
+                                                    <Link
+                                                        href="/admin/classes"
+                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    >
+                                                        Classes
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                             </div>
