@@ -1,40 +1,28 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createAdminClient } from "@/config/appwrite";
-import { ID, Query } from "node-appwrite";
+import { ID } from "node-appwrite";
 
-export const config = {
-  api: {
-    bodyParser: false, // Required for raw body verification
-  },
-};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-async function buffer(readable) {
-  const chunks = [];
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-  }
-  return Buffer.concat(chunks);
-}
-
 export async function POST(req) {
-  const buf = await buffer(req.body);
+  const body = await req.arrayBuffer();
   const sig = req.headers.get("stripe-signature");
 
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(
-      buf,
+      Buffer.from(body),
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
-    console.error("Webhook signature verification failed.", err.message);
-    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
+    console.error("Webhook signature verification failed:", err.message);
+    return new NextResponse("Webhook Error", { status: 400 });
   }
+
 
   // Only handle successful checkout
   if (event.type === "checkout.session.completed") {
@@ -42,7 +30,8 @@ export async function POST(req) {
 
     const classId = session.metadata.classId;
     const paymentIntentId = session.payment_intent;
-    const userEmail = session.customer_email; // Optional: can use for guest users
+    const userEmail = session.metadata.students_email;
+    const studentName = session.metadata.students_name || "Guest";
 
     try {
       const { databases } = await createAdminClient();
@@ -62,10 +51,10 @@ export async function POST(req) {
         process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_BOOKINGS,
         ID.unique(),
         {
-          class_id: classId,
-          user_email: userEmail || "Guest",
-          payment_intent_id: paymentIntentId,
-          created_at: new Date().toISOString(),
+            class_id: classId,
+            students_name: studentName,
+            students_email: userEmail || "Guest",
+            payment_intent_id: paymentIntentId,
         }
       );
 

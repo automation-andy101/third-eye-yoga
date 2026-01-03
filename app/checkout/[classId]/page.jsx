@@ -49,9 +49,41 @@ export default async function CheckoutPage({ params }) {
                 </div>
             </div>
 
-            {/* Payment action */}
-            <form action={createCheckoutSession} className="space-y-4">
+                {/* Payment Form */}
+                <form action={createCheckoutSession} className="space-y-4">
+
                 <input type="hidden" name="classId" value={yogaClass.$id} />
+                <input type="hidden" name="price" value={yogaClass.price} />
+
+                {/* NEW: User name input */}
+                <div>
+                    <label htmlFor="students_name" className="block text-gray-700 font-medium mb-1">
+                        Your Name
+                    </label>
+                    <input
+                        type="text"
+                        id="students_name"
+                        name="students_name"
+                        required
+                        placeholder="Enter your full name"
+                        className="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                {/* NEW: User email input */}
+                <div>
+                    <label htmlFor="students_name" className="block text-gray-700 font-medium mb-1">
+                        Your Email
+                    </label>
+                    <input
+                        type="email"
+                        id="students_email"
+                        name="students_email"
+                        required
+                        placeholder="Enter your email address"
+                        className="border rounded w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
 
                 <button
                     type="submit"
@@ -66,7 +98,6 @@ export default async function CheckoutPage({ params }) {
                     Secure payment powered by Stripe
                 </p>
             </form>
-
         </div>
     </div>
   );
