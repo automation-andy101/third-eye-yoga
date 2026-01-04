@@ -24,57 +24,35 @@ export default function TeacherListPage({ getAllTeachers }) {
         setLoading(false);
     };
 
+    // Fetch teachers for today on initial load
+    useEffect(() => {
+        fetchTeachers();
+    }, []);
+
     return (
         <div>
-            <Link
-                href={"/admin/teachers/new"}
-                type="button"
-                className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
-            >
-                + Create Teacher
-            </Link>
-            
-            {/* Classes for selected date */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {/* Class Card */}
-                <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
-                    <h2 className="mb-1 text-lg font-medium text-gray-900">
-                        Vinyasa Flow
-                    </h2>
-
-                    <p className="text-sm text-gray-600">
-                        18:00 – 19:00
-                    </p>
-
-                    <p className="mt-2 text-sm text-gray-700">
-                        Teacher: Andy
-                    </p>
-
-                    <p className="text-sm text-gray-700">
-                        Capacity: 12
-                    </p>
-
-                    <div className="mt-4">
-                        <button className="text-sm font-medium text-gray-800 hover:underline">
-                        Edit class
-                        </button>
-                    </div>
-                </div>
+            {/* Header / Actions */}
+            <div className="mb-6 flex justify-end">
+                <Link
+                    href="/admin/teachers/new"
+                    className="inline-flex items-center rounded-lg bg-gray-800 px-6 py-3 text-base font-medium text-white hover:bg-gray-700"
+                >
+                    + Create Teacher
+                </Link>
             </div>
 
-            
-
-
-            {/* Display teachers */}
+            {/* Content */}
             {loading ? (
-                <p>Loading...</p>
+                <p className="text-gray-600">Loading...</p>
             ) : teachers.length > 0 ? (
-                teachers.map((teacher) => (
-                <TeacherCard teacher={teacher} key={teacher.$id} />
-                ))
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {teachers.map((teacher) => (
+                    <TeacherCard teacher={teacher} key={teacher.$id} />
+                ))}
+                </div>
             ) : (
-                <div className="mt-8 flex justify-center">
-                    <p className="mt-20 text-gray-600">No teachers available</p>
+                <div className="mt-16 flex justify-center">
+                <p className="text-gray-600">No teachers available</p>
                 </div>
             )}
         </div>
