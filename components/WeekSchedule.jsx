@@ -35,7 +35,6 @@ export default function WeekSchedule({ getClassesForDay }) {
 
     return (
         <div>
-
             {/* Date picker */}
             <WeekDatePicker onSelect={handleDateSelect} />
 
