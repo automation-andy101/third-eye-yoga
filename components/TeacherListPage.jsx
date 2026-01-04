@@ -46,13 +46,13 @@ export default function TeacherListPage({ getAllTeachers }) {
                 <p className="text-gray-600">Loading...</p>
             ) : teachers.length > 0 ? (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {teachers.map((teacher) => (
-                    <TeacherCard teacher={teacher} key={teacher.$id} />
-                ))}
+                    {teachers.map((teacher) => (
+                        <TeacherCard teacher={teacher} key={teacher.$id} />
+                    ))}
                 </div>
             ) : (
                 <div className="mt-16 flex justify-center">
-                <p className="text-gray-600">No teachers available</p>
+                    <p className="text-gray-600">No teachers available</p>
                 </div>
             )}
         </div>
