@@ -29,7 +29,7 @@ const EditTeacherForm = ({ teacher }) => {
 
         if (state?.success) {
             toast.success("Teacher updated successfully!");
-            router.push("/app/admin/teachers");
+            router.push("/admin/teachers");
         }
     }, [state, router]);
 
@@ -131,10 +131,16 @@ const EditTeacherForm = ({ teacher }) => {
                             <label className="relative inline-flex cursor-pointer items-center">
                                 <input
                                     type="checkbox"
-                                    name="isActive"
                                     checked={isActive}
                                     onChange={() => setIsActive(!isActive)}
                                     className="peer sr-only"
+                                />
+
+                                {/* Hidden fallback */}
+                                <input 
+                                    type="hidden" 
+                                    name="isActive" 
+                                    value={isActive ? "true" : "false"}                              
                                 />
 
                                 {/* Track */}

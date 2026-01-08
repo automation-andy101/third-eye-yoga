@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import createTeacher from "/app/actions/createTeacher";
 
 const AddTeacherForm = ({ teachers }) => {
+    const [previewImage, setPreviewImage] = useState(null);
+    const [isActive, setIsActive] = useState(true);
+
     const [state, formAction] = useFormState(createTeacher, {});
     const router = useRouter();
 
@@ -15,7 +19,7 @@ const AddTeacherForm = ({ teachers }) => {
 
         if (state.success) {
             toast.success("Teacher created successfully!");
-            router.push("/");
+            router.push("/admin/teachers");
         }
     }, [state, router]);
 
@@ -54,12 +58,73 @@ const AddTeacherForm = ({ teachers }) => {
                         Image
                     </label>
 
+                    {previewImage && (
+                        <div className="mt-4">
+                            <Image
+                                src={previewImage}
+                                alt="Teacher preview"
+                                className="w-full sm:w-1/3 h-64 object-cover rounded-lg"
+                                width={400}
+                                height={256}
+                            />
+                        </div>
+                    )}
+
                     <input
                         type="file"
                         id="image"
                         name="image"
+                        accept="image/*"
                         className="border rounded w-full py-2 px-3"
+                        onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                                setPreviewImage(URL.createObjectURL(file));
+                            }
+                        }}
                     />
+
+                </div>
+
+                <div className="mb-6">
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                        Teacher Status
+                    </label>
+
+                    <div className="flex items-center gap-4">
+                        {/* Toggle */}
+                        <label className="relative inline-flex cursor-pointer items-center">
+                            <input
+                                type="checkbox"
+                                checked={isActive}
+                                onChange={() => setIsActive((prev) => !prev)}
+                                className="peer sr-only"
+                            />
+
+                            {/* Hidden fallback */}
+                            <input 
+                                type="hidden" 
+                                name="isActive" 
+                                value={isActive ? "true" : "false"}                              
+                            />
+
+                            {/* Track */}
+                            <div className="h-6 w-11 rounded-full bg-gray-300 transition-colors peer-checked:bg-green-500"></div>
+
+                            {/* Thumb */}
+                            <div className="absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform peer-checked:translate-x-5"></div>
+                        </label>
+
+                        {/* State label */}
+                        <span className="text-sm font-medium text-gray-700">
+                            {isActive ? "Active" : "Inactive"}
+                        </span>
+                    </div>
+
+                    {/* Helper text */}
+                    <p className="mt-1 text-xs text-gray-500">
+                        Active teachers appear in class bookings
+                    </p>
                 </div>
 
                 <div className="flex flex-col gap-5">

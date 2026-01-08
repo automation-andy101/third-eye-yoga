@@ -17,6 +17,9 @@ async function editTeacher(previousState, formData, id) {
             }
         }
 
+        // Parse isActive value from string e.g. 'true' to a boolen
+        const isActive = formData.get("isActive") === "true";
+
         // Uploading image
         const teacherId = formData.get("teacherId");
         const existingImage = formData.get("existingImage");
@@ -28,7 +31,7 @@ async function editTeacher(previousState, formData, id) {
         if (image && image.size > 0 && image.name !== "undefined") {
             try {
                 const uploaded = await storage.createFile(
-                    process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ROOMS,
+                    process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_TEACHERS,
                     ID.unique(), 
                     image
                 );
@@ -49,8 +52,8 @@ async function editTeacher(previousState, formData, id) {
             {
                name: formData.get('name'),
                bio: formData.get('bio'),
-               is_active: formData.get('isActive'),
-               image: imageId
+               is_active: isActive,
+               image_id: imageId
             }
         );
 
