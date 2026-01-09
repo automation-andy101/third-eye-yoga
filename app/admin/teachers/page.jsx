@@ -6,7 +6,7 @@ import Heading from "@/components/Heading";
 import TeacherListPage from "@/components/TeacherListPage";
 
 const AdminTeacherPage = async () => {
-  const teachers = await getAllTeachers();
+  // const teachers = await getAllTeachers();
   const { isAdmin } = await checkAuth();
 
   if (!isAdmin) {

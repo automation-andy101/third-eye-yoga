@@ -43,7 +43,7 @@ export default function WeekSchedule({ getClassesForDay }) {
                 <p>Loading...</p>
             ) : classes.length > 0 ? (
                 classes.map((yogaClass) => (
-                <ClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+                    <ClassCard yogaClass={yogaClass} key={yogaClass.$id} />
                 ))
             ) : (
                 <div className="mt-8 flex justify-center">
