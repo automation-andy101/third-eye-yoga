@@ -8,22 +8,35 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 async function getClassesForDay(date) {
     noStore();
-    
+
+    const start = new Date(date);
+    start.setUTCHours(0, 0, 0, 0);
+
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 1);
+
+    console.log("Query start:", start.toISOString());
+    console.log("Query end:", end.toISOString());
+
     try {
         const { databases } = await createAdminClient();
-
+        console.log({
+            start: start.toISOString(),
+            end: end.toISOString(),
+        });
         // Fetch classes
         const { documents: classes } = await databases.listDocuments(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
             process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_CLASSES,
             [
-                Query.greaterThanEqual("start_at", `${date}T00:00:00Z`),
-                Query.lessThan("start_at", `${date}T23:59:59Z`),
+                Query.greaterThanEqual("start_at", start.toISOString()),
+                Query.lessThan("start_at", end.toISOString()),
                 Query.limit(100),
-                Query.offset(0),
             ]
         );
-        
+
+        console.log("Returned classes:", classes);
+
         // Fetch teachers
         const { documents: teachers } = await databases.listDocuments(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE,

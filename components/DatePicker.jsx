@@ -9,11 +9,6 @@ const DatePicker = ({ onSelect }) => {
     return today.toISOString().split("T")[0]; // YYYY-MM-DD
   });
 
-  // Notify parent when date changes
-  useEffect(() => {
-    if (onSelect) onSelect(selectedDate);
-  }, [selectedDate, onSelect]);
-
   return (
     <div className="mt-4 mb-8">
       <label
@@ -27,8 +22,10 @@ const DatePicker = ({ onSelect }) => {
         type="date"
         id="date"
         className="w-60 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-700"
-        value={selectedDate}
-        onChange={(e) => setSelectedDate(e.target.value)}
+        onChange={(e) => {
+          setSelectedDate(e.target.value);
+          if (onSelect) onSelect(e.target.value); // only call on user change
+        }}
       />
     </div>
   );
