@@ -13,7 +13,7 @@ const EditClassForm = ({ yogaClass, teachers }) => {
     const textareaRef = useRef(null);
     const [previewImage, setPreviewImage] = useState(null);
 
-    const [isActive, setIsActive] = useState(yogaClass.teacher.is_active);
+    const [isActive, setIsActive] = useState(yogaClass.is_active);
 
     const bucketId = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_TEACHERS;
     const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
@@ -29,7 +29,7 @@ const EditClassForm = ({ yogaClass, teachers }) => {
 
         if (state.success) {
             toast.success("Class created successfully!");
-            router.push("/");
+            router.push("/admin/classes/");
         }
     }, [state, router]);
 

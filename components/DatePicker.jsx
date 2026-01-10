@@ -21,6 +21,7 @@ const DatePicker = ({ onSelect }) => {
       <input
         type="date"
         id="date"
+        value={selectedDate}
         className="w-60 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-700"
         onChange={(e) => {
           setSelectedDate(e.target.value);
