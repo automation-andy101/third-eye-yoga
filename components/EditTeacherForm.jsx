@@ -65,7 +65,7 @@ const EditTeacherForm = ({ teacher }) => {
                             Bio
                         </label>
                         <textarea
-                        ref={textareaRef}
+                            ref={textareaRef}
                             id="bio"
                             name="bio"
                             rows={1}
@@ -118,7 +118,6 @@ const EditTeacherForm = ({ teacher }) => {
                             name="teacherId"
                             value={teacher.$id}
                         />
-
                     </div>
 
                     <div className="mb-6">
@@ -173,7 +172,7 @@ const EditTeacherForm = ({ teacher }) => {
                 </form>
             </div>
         </>
-    )
+    );
 }
 
 export default EditTeacherForm

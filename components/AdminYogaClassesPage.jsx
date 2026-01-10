@@ -23,31 +23,30 @@ const AdminYogaClassesPage = ({ getClassesForDay }) => {
 
   return (
     <div>
-      {/* Header / Actions */}
-      <div className="mb-6 flex justify-end">
-        <Link
-          href="/admin/classes/new"
-          className="inline-flex items-center rounded-lg bg-gray-800 px-6 py-3 text-base font-medium text-white hover:bg-gray-700"
-        >
-          + Create Class
-        </Link>
-      </div>
+        {/* Header / Actions */}
+        <div className="mb-2 flex items-center justify-between gap-4">
+            <DatePicker onSelect={fetchClasses} />
 
-      {/* Date picker */}
-      <DatePicker onSelect={fetchClasses} />
-
-      {/* Display classes */}
-      {loading ? (
-        <p>Loading...</p>
-      ) : classesForSelectedDay.length > 0 ? (
-        classesForSelectedDay.map((yogaClass) => (
-          <AdminClassCard yogaClass={yogaClass} key={yogaClass.$id} />
-        ))
-      ) : (
-        <div className="mt-8 flex justify-center">
-          <p className="mt-20 text-gray-600">No classes available</p>
+            <Link
+                href="/admin/classes/new"
+                className="inline-flex items-center rounded-lg bg-gray-800 px-6 py-2.5 text-base font-medium text-white hover:bg-gray-700"
+            >
+                + Create Class
+            </Link>
         </div>
-      )}
+
+        {/* Display classes */}
+        {loading ? (
+            <p>Loading...</p>
+        ) : classesForSelectedDay.length > 0 ? (
+            classesForSelectedDay.map((yogaClass) => (
+            <AdminClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+            ))
+        ) : (
+            <div className="mt-8 flex justify-center">
+            <p className="mt-20 text-gray-600">No classes available</p>
+            </div>
+        )}
     </div>
   );
 };
