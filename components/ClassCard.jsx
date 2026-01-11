@@ -18,6 +18,17 @@ const ClassCard = ({ yogaClass }) => {
         );
     }, [yogaClass.start_at]);
 
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // e.g. "18:00"
+    }
+
+    function formatTimeEnd(dateString, durationMinutes) {
+        const date = new Date(dateString);
+        date.setMinutes(date.getMinutes() + durationMinutes);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // e.g. "19:30"
+    }
+
     const bucketId = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_TEACHERS;
     const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
 
@@ -27,62 +38,94 @@ const ClassCard = ({ yogaClass }) => {
                 : "/images/no-image.jpg";
 
     return (
-        <div className="bg-white shadow rounded-lg p-4 mt-4
-                flex flex-col sm:flex-row
-                items-start
-                gap-4 sm:gap-10"
-        >
-            <input type="hidden" name="class_id" value={yogaClass.$id} />
+        <div className="mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+            <div className="grid grid-cols-[140px_260px_1fr_180px] gap-6 items-start">
+                {/* COLUMN 1: Teacher image */}
+                <div className="flex justify-center mt-2">
+                    <div className="w-32 h-32 overflow-hidden rounded-full">
+                        <Image
+                            src={imageSrc}
+                            alt={yogaClass.teacher.name || "Teacher"}
+                            width={150}
+                            height={150}
+                            className="object-cover w-full h-full"
+                        />
+                    </div>
+                </div>
 
-            {/* Duration  */}
-            <div className="flex flex-col space-y-3 shrink-0">
-                <div>
-                    <h4 className="text-lg font-semibold">{time}</h4>
-                    <p className="text-sm font-semibold text-gray-800">
-                        {yogaClass.duration} min
+                {/* COLUMN 2: Date / time / capacity */}
+                <div className="space-y-2 text-sm text-gray-600">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                        {yogaClass.title}
+                    </h3>
+
+                    <p className="text-sm text-gray-500 mb-3">
+                        with {yogaClass.teacher.name}
+                    </p>
+
+                    <p>
+                        🗓{" "}
+                        {new Date(yogaClass.start_at).toLocaleDateString("en-GB", {
+                        weekday: "long",
+                        day: "numeric",
+                        month: "short",
+                        })}
+                    </p>
+
+                    <p>
+                        🕒 {formatTime(yogaClass.start_at)} –{" "}
+                        {formatTimeEnd(yogaClass.start_at, yogaClass.duration)}
+                    </p>
+
+                    <p>
+                        👥 {yogaClass.capacity - yogaClass.booked_count} spots remaining (
+                        {yogaClass.booked_count} booked)
                     </p>
                 </div>
 
-                <div className="w-20 h-20">
-                    <Image
-                        src={imageSrc}
-                        alt={yogaClass.teacher.name || "Teacher"}
-                        className="w-full h-full object-cover rounded-full"
-                        width={200}
-                        height={200}
-                    />
+                    {/* COLUMN 3: Title + teacher + description */}
+                <div className="mt-2">
+                    {yogaClass.description && (
+                        <>
+                            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                                Class Description
+                            </p>
+                            <p className="mt-4 text-sm text-gray-700 leading-relaxed">
+                                {yogaClass.description}
+                            </p>
+                        </>
+                    )}
                 </div>
-            </div>
-            
-            {/* Class description  */}
-            <div className="flex-1 max-w-lg sm:max-w-xl space-y-2">
-                <h4 className="text-lg font-semibold">{yogaClass.title}</h4>
-                <p className="text-sm font-semibold text-gray-800">
-                    {yogaClass.teacher.name}
-                </p>
-                <p className="text-sm text-gray-600 line-clamp-4">
-                    {yogaClass.description}
-                </p>
-            </div>
 
-            {/* Location */}
-            <div className="shrink-0 w-48 self-center sm:ml-6">
-                <h4 className="text-sm font-semibold">{yogaClass.location}</h4>
-            </div>
+                {/* COLUMN 4: Status + actions */}
+                <div className="flex flex-col items-end h-full">
+                    <span
+                        className={`mb-4 rounded-full px-3 py-1 text-xs font-medium ${
+                        yogaClass.is_active
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                    >
+                        {yogaClass.is_active ? "Scheduled" : "Cancelled"}
+                    </span>
 
-            {/* Book */}
-            <div className="shrink-0 self-center">
-                <Link href={`/checkout/${yogaClass.$id}`}>
-                    <button
-                        // onClick={() => Router.push(`/checkout/${yogaClass.$id}`)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded
-                                w-32 text-center hover:bg-blue-700">
-                        Book
-                    </button>
-                </Link>
-            </div>
+                    <div className="mt-auto flex gap-3">
+                        {/* Book */}
+                        <div className="shrink-0 self-center">
+                            <Link href={`/checkout/${yogaClass.$id}`}>
+                                <button
+                                    // onClick={() => Router.push(`/checkout/${yogaClass.$id}`)}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded
+                                            w-32 text-center hover:bg-blue-700">
+                                    Book
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>    
         </div>
-  )
+    )
 }
 
 export default ClassCard

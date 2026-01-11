@@ -35,8 +35,11 @@ export default function WeekSchedule({ getClassesForDay }) {
 
     return (
         <div>
-            {/* Date picker */}
-            <WeekDatePicker onSelect={handleDateSelect} />
+            {/* Header / Actions */}
+            <div className="mt-6 mb-4 flex items-center justify-between gap-4">
+                {/* Date picker */}
+                <WeekDatePicker onSelect={handleDateSelect} />
+            </div>
 
             {/* Display classes */}
             {loading ? (

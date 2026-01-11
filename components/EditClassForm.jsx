@@ -43,7 +43,7 @@ const EditClassForm = ({ yogaClass, teachers }) => {
     };
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full">
+        <>
             <form action={formAction}>
                 <div className="mb-4">
                     <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
@@ -268,7 +268,7 @@ const EditClassForm = ({ yogaClass, teachers }) => {
                     </button>
                 </div>
             </form>
-        </div>
+        </>
     )
 }
 

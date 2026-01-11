@@ -45,12 +45,12 @@ const AdminYogaClassesPage = ({ getClassesForDay }) => {
             {loading ? (
                 <p>Loading...</p>
             ) : classesForSelectedDay.length > 0 ? (
-                classesForSelectedDay.map((yogaClass) => (
-                <AdminClassCard yogaClass={yogaClass} key={yogaClass.$id} />
-                ))
+                    classesForSelectedDay.map((yogaClass) => (
+                        <AdminClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+                    ))
             ) : (
                 <div className="mt-8 flex justify-center">
-                <p className="mt-20 text-gray-600">No classes available</p>
+                    <p className="mt-20 text-gray-600">No classes available</p>
                 </div>
             )}
         </div>

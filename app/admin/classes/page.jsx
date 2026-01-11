@@ -10,7 +10,6 @@ import AdminYogaClassesPage from "@/components/AdminYogaClassesPage";
 
 
 const AdminClassesPage = async () => {
-  // const teachers = await getAllTeachers();
   const { isAdmin } = await checkAuth();  
 
   if (!isAdmin) {
