@@ -17,7 +17,7 @@ const AddClassPage = async () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Heading title="Add a class" />
+        <Heading title="Add a class" subtitle="Admin area" />
         <AddClassForm teachers={teachers} />
       </div>
     </div>

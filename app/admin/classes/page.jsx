@@ -19,7 +19,7 @@ const AdminClassesPage = async () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <Heading title="[Admin] Classses" />
+        <Heading title="Classses" subtitle="Admin area" />
 
         <AdminYogaClassesPage getClassesForDay={getClassesForDay} />
     </div>
