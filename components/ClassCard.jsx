@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import getTeacherById from "@/app/actions/getTeacherById";
 
 const ClassCard = ({ yogaClass }) => {
+    const isFullyBooked = yogaClass.booked_count >= yogaClass.capacity;
     const [time, setTime] = useState("");
 
     useEffect(() => {
@@ -38,7 +39,10 @@ const ClassCard = ({ yogaClass }) => {
                 : "/images/no-image.jpg";
 
     return (
-        <div className="mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+        <div className={`mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm
+            ${isFullyBooked ? "opacity-80" : "hover:shadow-md"}
+        `}
+        >
             <div className="grid grid-cols-[140px_260px_1fr_180px] gap-6 items-start">
                 {/* COLUMN 1: Teacher image */}
                 <div className="flex justify-center mt-2">
@@ -114,10 +118,14 @@ const ClassCard = ({ yogaClass }) => {
                         <div className="shrink-0 self-center">
                             <Link href={`/checkout/${yogaClass.$id}`}>
                                 <button
-                                    // onClick={() => Router.push(`/checkout/${yogaClass.$id}`)}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded
-                                            w-32 text-center hover:bg-blue-700">
-                                    Book
+                                    disabled={isFullyBooked}
+                                    className={`mt-4 w-full rounded px-4 py-2 text-sm font-medium
+                                        ${isFullyBooked
+                                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                                        : "bg-indigo-600 text-white hover:bg-indigo-700"}
+                                    `}
+                                    >
+                                    {isFullyBooked ? "Fully booked" : "Book now"}
                                 </button>
                             </Link>
                         </div>

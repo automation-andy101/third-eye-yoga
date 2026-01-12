@@ -15,15 +15,9 @@ async function getClassesForDay(date) {
     const end = new Date(start);
     end.setUTCDate(end.getUTCDate() + 1);
 
-    console.log("Query start:", start.toISOString());
-    console.log("Query end:", end.toISOString());
-
     try {
         const { databases } = await createAdminClient();
-        console.log({
-            start: start.toISOString(),
-            end: end.toISOString(),
-        });
+
         // Fetch classes
         const { documents: classes } = await databases.listDocuments(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
@@ -34,8 +28,6 @@ async function getClassesForDay(date) {
                 Query.limit(100),
             ]
         );
-
-        console.log("Returned classes:", classes);
 
         // Fetch teachers
         const { documents: teachers } = await databases.listDocuments(

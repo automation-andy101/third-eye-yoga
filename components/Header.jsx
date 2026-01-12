@@ -126,7 +126,7 @@ const Header = () => {
 
                                 {isAuthenticated && (
                                     <>
-                                        <Link href="/rooms/my">
+                                        <Link href="/bookings">
                                             <FaBuilding className="inline mr-1" /> My Bookings
                                         </Link>
                                         <button onClick={handleLogout} className="mx-3 text-gray-800 hover:text-gray-600">

@@ -65,7 +65,6 @@ async function createTeacher(previousState, formData) {
         }
 
     } catch (error) {
-        console.log(error)
         const errorMessage = error.response.message || "An unexpected error has occurred!";
 
         return {

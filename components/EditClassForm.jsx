@@ -9,7 +9,6 @@ import editClass from "/app/actions/editClass";
 import getAllTeachers from "@/app/actions/getAllTeachers";
 
 const EditClassForm = ({ yogaClass, teachers }) => {
-    console.log("------------" + JSON.stringify(yogaClass.teacher.name));
     const textareaRef = useRef(null);
     const [previewImage, setPreviewImage] = useState(null);
 
