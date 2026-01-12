@@ -29,6 +29,7 @@ export async function POST(req) {
     const session = event.data.object;
 
     const classId = session.metadata.classId;
+    const userId = session.metadata.userId;
     const paymentIntentId = session.payment_intent;
     const userEmail = session.metadata.students_email;
     const studentName = session.metadata.students_name || "Guest";
@@ -52,6 +53,7 @@ export async function POST(req) {
         ID.unique(),
         {
             class_id: classId,
+            user_id: userId,
             students_name: studentName,
             students_email: userEmail || "Guest",
             payment_intent_id: paymentIntentId,

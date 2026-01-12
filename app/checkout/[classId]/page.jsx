@@ -55,8 +55,8 @@ export default async function CheckoutPage({ params }) {
                 </div>
             </div>
 
-                {/* Payment Form */}
-                <form action={createCheckoutSession} className="space-y-4">
+            {/* Payment Form */}
+            <form action={createCheckoutSession} className="space-y-4">
 
                 <input type="hidden" name="classId" value={yogaClass.$id} />
                 <input type="hidden" name="price" value={yogaClass.price} />
