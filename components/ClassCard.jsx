@@ -6,8 +6,25 @@ import { useEffect, useState } from "react";
 import getTeacherById from "@/app/actions/getTeacherById";
 
 const ClassCard = ({ yogaClass }) => {
-    const isFullyBooked = yogaClass.booked_count >= yogaClass.capacity;
     const [time, setTime] = useState("");
+    
+    const now = new Date();
+    const start = new Date(yogaClass.start_at);
+    const end = new Date(start);
+    end.setMinutes(end.getMinutes() + yogaClass.duration);
+
+    const isFinished = end < now;
+    const isOngoing = start <= now && end > now;
+    const isUpcoming = start > now;
+
+    const isFullyBooked = !isFinished && yogaClass.booked_count >= yogaClass.capacity;
+
+    const isDisabled = isFullyBooked || isFinished || !yogaClass.is_active;
+    const buttonLabel = 
+        !yogaClass.is_active ? "Cancelled"
+        : isFinished ? "Finished" 
+        : isFullyBooked ? "Fully booked" 
+        : "Book now";
 
     useEffect(() => {
         const date = new Date(yogaClass.start_at);
@@ -38,9 +55,27 @@ const ClassCard = ({ yogaClass }) => {
                 ? `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${yogaClass.teacher.image_id}/view?project=${projectId}`
                 : "/images/no-image.jpg";
 
+    let statusLabel = null;
+    let statusClasses = "";
+
+    if (!yogaClass.is_active) {
+        statusLabel = "Cancelled";
+        statusClasses = "bg-red-100 text-red-700";
+    } else if (isFinished) {
+        statusLabel = "Completed";
+        statusClasses = "bg-gray-700 text-white";
+    } else if (isOngoing) {
+        statusLabel = "Live";
+        statusClasses = "bg-red-600 text-white";
+    } else {
+        statusLabel = "Scheduled";
+        statusClasses = "bg-green-100 text-green-700";
+    }
+
     return (
-        <div className={`mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm
+        <div className={`relative mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm
             ${isFullyBooked ? "opacity-80" : "hover:shadow-md"}
+
         `}
         >
             <div className="grid grid-cols-[140px_260px_1fr_180px] gap-6 items-start">
@@ -103,7 +138,16 @@ const ClassCard = ({ yogaClass }) => {
 
                 {/* COLUMN 4: Status + actions */}
                 <div className="flex flex-col items-end h-full">
-                    <span
+                    {/* Status badge */}
+                    {statusLabel && (
+                        <span
+                            className={`mb-4 rounded-full px-3 py-1 text-xs font-medium ${statusClasses}`}
+                        >
+                            {statusLabel}
+                        </span>
+                    )}
+                    
+                    {/* <span
                         className={`mb-4 rounded-full px-3 py-1 text-xs font-medium ${
                         yogaClass.is_active
                             ? "bg-green-100 text-green-700"
@@ -111,21 +155,23 @@ const ClassCard = ({ yogaClass }) => {
                         }`}
                     >
                         {yogaClass.is_active ? "Scheduled" : "Cancelled"}
-                    </span>
+                    </span> */}
 
                     <div className="mt-auto flex gap-3">
                         {/* Book */}
                         <div className="shrink-0 self-center">
                             <Link href={`/checkout/${yogaClass.$id}`}>
                                 <button
-                                    disabled={isFullyBooked}
-                                    className={`mt-4 w-full rounded px-4 py-2 text-sm font-medium
-                                        ${isFullyBooked
+                                    disabled={isDisabled}
+                                    className={`mt-4 w-full rounded px-4 py-2 text-sm font-medium transition
+                                    ${
+                                        isDisabled
                                         ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                                        : "bg-indigo-600 text-white hover:bg-indigo-700"}
+                                        : "bg-indigo-600 text-white hover:bg-indigo-700"
+                                    }
                                     `}
-                                    >
-                                    {isFullyBooked ? "Fully booked" : "Book now"}
+                                >
+                                    {buttonLabel}
                                 </button>
                             </Link>
                         </div>

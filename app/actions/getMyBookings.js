@@ -14,13 +14,11 @@ async function getMyBookings(userId) {
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
       process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_BOOKINGS,
       [
-        Query.orderDesc("user_id", userId),
+        Query.equal("user_id", userId),
         Query.orderDesc("$createdAt"),
         Query.limit(100)
       ]
     );
-
-    console.log("Bookings -----------------" + JSON.stringify(bookings));
 
     if (!bookings.length) {
       return {
@@ -44,15 +42,11 @@ async function getMyBookings(userId) {
       classes.map((c) => [c.$id, c])
     );
 
-    console.log("Class Map -----------------" + JSON.stringify(classMap));
-
     // Attach class to booking
     const bookingsWithClasses = bookings.map((booking) => ({
       ...booking,
       class: classMap[booking.class_id] || null,
     }));
-
-    console.log("Bookings With Class -----------------" + JSON.stringify(bookingsWithClasses));
 
     // Split upcoming vs past
     const upcoming = bookingsWithClasses.filter(

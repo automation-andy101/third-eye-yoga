@@ -3,14 +3,18 @@ import BookingCard from "/components/BookingCard";
 import Heading from "/components/Heading";
 import BookingTabs from "/components/BookingTabs";
 import EmptyState from "/components/EmptyState";
+import checkAuth from "@/app/actions/checkAuth";
 
-export default async function MyBookingsPage({ searchParams }) {
+export default async function BookingsPage({ searchParams }) {
+  const { user } = await checkAuth();
+
+  if (!user) {
+    return <EmptyState title="Please sign in" />;
+  }
+
   const tab = searchParams?.tab || "upcoming";
 
-  const { upcoming, past } = await getMyBookings();
-
-  console.log("UPCOMING ------------" + JSON.stringify(upcoming));
-  console.log("PAST ------------" + JSON.stringify(past));
+  const { upcoming, past } = await getMyBookings(user.id);
 
   const bookings = tab === "past" ? past : upcoming;
 
