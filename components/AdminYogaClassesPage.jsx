@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import DatePicker from "./DatePicker";
-import AdminClassCard from "./AdminClassCard";
+import AdminClassCard from "./AdminClassCardOLD";
 import Link from "next/link";
 
 const AdminYogaClassesPage = ({ getClassesForDay }) => {

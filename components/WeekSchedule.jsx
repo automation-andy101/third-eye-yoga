@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import WeekDatePicker from "./WeekDatePicker";
 import ClassCard from "./ClassCard";
+import ClassCardVariation from "./ClassCardVariation";
 
 export default function WeekSchedule({ getClassesForDay }) {
     const [classes, setClasses] = useState([]);
@@ -46,7 +47,8 @@ export default function WeekSchedule({ getClassesForDay }) {
                 <p>Loading...</p>
             ) : classes.length > 0 ? (
                 classes.map((yogaClass) => (
-                    <ClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+                    // <ClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+                    <ClassCardVariation yogaClass={yogaClass} key={yogaClass.$id} />
                 ))
             ) : (
                 <div className="mt-8 flex justify-center">

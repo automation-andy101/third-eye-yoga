@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import getTeacherById from "@/app/actions/getTeacherById";
 
-const ClassCard = ({ yogaClass }) => {
+const ClassCardVariation = ({ yogaClass }) => {
     const [time, setTime] = useState("");
     
     const now = new Date();
@@ -103,15 +103,6 @@ const ClassCard = ({ yogaClass }) => {
                     </p>
 
                     <p>
-                        🗓{" "}
-                        {new Date(yogaClass.start_at).toLocaleDateString("en-GB", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "short",
-                        })}
-                    </p>
-
-                    <p>
                         🕒 {formatTime(yogaClass.start_at)} –{" "}
                         {formatTimeEnd(yogaClass.start_at, yogaClass.duration)}
                     </p>
@@ -148,16 +139,23 @@ const ClassCard = ({ yogaClass }) => {
                     )}
 
                     <div className="mt-auto flex gap-3">
-                        <Link
-                            href={`/admin/classes/${yogaClass.$id}/edit`}
-                            className="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
-                        >
-                            Edit
-                        </Link>
-
-                        <button className="inline-flex items-center rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50">
-                            Delete
-                        </button>
+                        {/* Book */}
+                        <div className="shrink-0 self-center">
+                            <Link href={`/checkout/${yogaClass.$id}`}>
+                                <button
+                                    disabled={isDisabled}
+                                    className={`mt-4 w-full rounded px-4 py-2 text-sm font-medium transition
+                                    ${
+                                        isDisabled
+                                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                                        : "bg-indigo-600 text-white hover:bg-indigo-700"
+                                    }
+                                    `}
+                                >
+                                    {buttonLabel}
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>    
@@ -165,4 +163,4 @@ const ClassCard = ({ yogaClass }) => {
     )
 }
 
-export default ClassCard
+export default ClassCardVariation;

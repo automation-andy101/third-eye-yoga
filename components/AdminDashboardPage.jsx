@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import AdminClassCard from "./AdminClassCard";
+import AdminClassCard from "./AdminClassCardOLD";
 
 const AdminDashboardPage = ({ classes, teachers, bookings }) => {
   const totalClassesForCurrentWeek = classes.length;
