@@ -7,7 +7,8 @@ import { formatTime, formatTimeEnd } from "@/app/utils/date";
 
 
 const ClassCardBase = ({ yogaClass, actions }) => {
-    const [time, setTime] = useState("");
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isBioOpen, setIsBioOpen] = useState(false);
 
     const status = useClassStatus(yogaClass);
     const { isFullyBooked, statusLabel, statusClasses } = status;
@@ -25,7 +26,7 @@ const ClassCardBase = ({ yogaClass, actions }) => {
             ${isFullyBooked ? "opacity-80" : "hover:shadow-md"}
         `}
         >
-            <div className="grid grid-cols-[140px_260px_1fr_180px] gap-6 items-start">
+            <div className="grid grid-cols-[140px_1fr_180px] gap-6 items-start">
                 {/* COLUMN 1: Teacher image */}
                 <div className="flex justify-center mt-2">
                     <div className="w-32 h-32 overflow-hidden rounded-full">
@@ -39,66 +40,135 @@ const ClassCardBase = ({ yogaClass, actions }) => {
                     </div>
                 </div>
 
-                {/* COLUMN 2: Date / time / capacity */}
+                {/* COLUMN 2: Class info + description */}
                 <div className="space-y-2 text-sm text-gray-600">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                        {yogaClass.title}
-                    </h3>
+                    <div className="mb-3">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                            Class
+                        </p>
 
-                    <p className="text-sm text-gray-500 mb-3">
-                        with {yogaClass.teacher.name}
+                        <h3 className="text-3xl font-bold text-gray-900 leading-tight">
+                            {yogaClass.title}
+                        </h3>
+                    </div>
+
+                    <p className="mb-3 flex items-center gap-2 text-sm text-gray-500">
+                        with 
+                        <span className="font-semibold text-gray-900">
+                            {yogaClass.teacher.name}
+                        </span>
+
+                        {yogaClass.teacher.bio && (
+                            <button
+                                onClick={() => setIsBioOpen(true)}
+                                className="text-xs font-medium text-indigo-600 hover:text-indigo-700 underline-offset-2 hover:underline"
+                            >
+                                Show bio
+                            </button>
+                        )}
                     </p>
 
-                    <p>
-                        🗓{" "}
-                        {new Date(yogaClass.start_at).toLocaleDateString("en-GB", {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "short",
-                        })}
-                    </p>
-
-                    <p>
-                        🕒 {formatTime(yogaClass.start_at)} –{" "}
-                        {formatTimeEnd(yogaClass.start_at, yogaClass.duration)}
-                    </p>
-
-                    <p>
-                        👥 {yogaClass.capacity - yogaClass.booked_count} spots remaining (
-                        {yogaClass.booked_count} booked)
-                    </p>
-                </div>
-
-                    {/* COLUMN 3: Title + teacher + description */}
-                <div className="mt-2">
+                    {/* Description */}
                     {yogaClass.description && (
-                        <>
-                            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
-                                Class Description
-                            </p>
-                            <p className="mt-4 text-sm text-gray-700 leading-relaxed">
+                        <div className="mt-2">
+                            <p
+                                className={`text-sm text-gray-700 leading-relaxed transition-all ${
+                                isExpanded ? "" : "line-clamp-2"
+                                }`}
+                            >
                                 {yogaClass.description}
                             </p>
-                        </>
+
+                            <button
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                className="mt-1 text-indigo-600 text-sm font-medium text-gray-900 hover:underline"
+                            >
+                                {isExpanded ? "Show less" : "Show more"}
+                            </button>
+                        </div>
                     )}
+
+                    <div className="pt-2 space-y-1">
+                        {/* <p>
+                            🗓{" "}
+                            {new Date(yogaClass.start_at).toLocaleDateString("en-GB", {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "short",
+                            })}
+                        </p> */}
+
+                        <p>
+                            🕒 {formatTime(yogaClass.start_at)} –{" "}
+                            {formatTimeEnd(yogaClass.start_at, yogaClass.duration)}
+                        </p>
+
+                        <p>
+                            👥 {yogaClass.capacity - yogaClass.booked_count} spots remaining (
+                            {yogaClass.booked_count} booked)
+                        </p>
+                    </div>
                 </div>
 
-                {/* COLUMN 4: Status + actions */}
-                <div className="flex flex-col items-end h-full">
-                    {/* Status badge */}
-                    {statusLabel && (
-                        <span
-                            className={`mb-4 rounded-full px-3 py-1 text-xs font-medium ${statusClasses}`}
-                        >
-                            {statusLabel}
-                        </span>
-                    )}
-                
+                {/* COLUMN 3: Price + actions */}
+                <div className="flex flex-col items-end h-full border-l border-gray-200 pl-6">
+                    <div className="mb-4 text-right">
+                        <span className="text-sm text-gray-500">Price</span>
+                        <div className="text-3xl font-semibold text-gray-900">
+                            £{yogaClass.price}
+                        </div>
+                    </div>
+
                     <div className="mt-auto">
                         {typeof actions === "function" ? actions(status) : actions}
                     </div>
                 </div>
-            </div>    
+            </div>
+
+            {isBioOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    {/* Backdrop click */}
+                    <div
+                        className="absolute inset-0"
+                        onClick={() => setIsBioOpen(false)}
+                    />
+
+                    {/* Modal */}
+                    <div className="relative z-10 w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
+                        <div className="flex items-start gap-4">
+                            <div className="h-20 w-20 overflow-hidden rounded-full">
+                                <Image
+                                    src={imageSrc}
+                                    alt={yogaClass.teacher.name}
+                                    width={80}
+                                    height={80}
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+
+                            <div className="flex-1">
+                                <h3 className="text-lg font-semibold text-gray-900">
+                                    {yogaClass.teacher.name}
+                                </h3>
+
+                                <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                                    {yogaClass.teacher.bio}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Close */}
+                        <button
+                            onClick={() => setIsBioOpen(false)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                            aria-label="Close"
+                        >
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            )}
+  
         </div>
     )
 }
