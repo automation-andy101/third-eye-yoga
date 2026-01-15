@@ -26,9 +26,9 @@ const ClassCardBase = ({ yogaClass, actions }) => {
             ${isFullyBooked ? "opacity-80" : "hover:shadow-md"}
         `}
         >
-            <div className="grid grid-cols-[140px_1fr_180px] gap-6 items-start">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-[140px_1fr_140px] items-start">
                 {/* COLUMN 1: Teacher image */}
-                <div className="flex justify-center mt-2">
+                <div className="flex justify-center md:justify-start">
                     <div className="w-32 h-32 overflow-hidden rounded-full">
                         <Image
                             src={imageSrc}
@@ -111,15 +111,37 @@ const ClassCardBase = ({ yogaClass, actions }) => {
                 </div>
 
                 {/* COLUMN 3: Price + actions */}
-                <div className="flex flex-col items-end h-full border-l border-gray-200 pl-6">
-                    <div className="mb-4 text-right">
+                <div
+                    className="
+                        flex flex-col md:flex-col items-center md:items-end 
+                        border-t border-gray-200 md:border-t-0 md:border-l pl-0 md:pl-6 pt-4 md:pt-0 h-full
+                    "
+                >
+                    {/* Desktop Price */}
+                    <div className="hidden md:block mb-auto text-right">
                         <span className="text-sm text-gray-500">Price</span>
                         <div className="text-3xl font-semibold text-gray-900">
                             £{yogaClass.price}
                         </div>
                     </div>
 
-                    <div className="mt-auto">
+                    {/* Mobile Price + Button Row */}
+                    <div className="flex md:hidden w-full justify-between items-center">
+                        <div className="text-left">
+                            <span className="text-sm text-gray-500">Price</span>
+                            <div className="text-2xl font-semibold text-gray-900">
+                                £{yogaClass.price}
+                            </div>
+                        </div>
+
+                        {/* Book now button */}
+                        <div>
+                            {typeof actions === "function" ? actions(status) : actions}
+                        </div>
+                    </div>
+
+                    {/* Desktop Button */}
+                    <div className="hidden md:block mt-auto w-full">
                         {typeof actions === "function" ? actions(status) : actions}
                     </div>
                 </div>
