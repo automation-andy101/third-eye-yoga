@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import DatePicker from "./DatePicker";
 import AdminClassCard from "./AdminClassCardOLD";
+import ClassCardAdminActions from "./class-cards/ClassCardAdminActions";
+import ClassCardBase from "./class-cards/ClassCardBase";
 import Link from "next/link";
 
 const AdminYogaClassesPage = ({ getClassesForDay }) => {
@@ -27,6 +29,13 @@ const AdminYogaClassesPage = ({ getClassesForDay }) => {
         setLoading(false);
     };
 
+    const handleDelete = async (classId) => {
+        if (!confirm("Are you sure you want to delete this class?")) return;
+
+        await deleteClass(classId);
+        Router.refresh();
+    }
+
     return (
         <div>
             {/* Header / Actions */}
@@ -46,7 +55,17 @@ const AdminYogaClassesPage = ({ getClassesForDay }) => {
                 <p>Loading...</p>
             ) : classesForSelectedDay.length > 0 ? (
                     classesForSelectedDay.map((yogaClass) => (
-                        <AdminClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+                        // <AdminClassCard yogaClass={yogaClass} key={yogaClass.$id} />
+                        <ClassCardBase 
+                            yogaClass={yogaClass} 
+                            actions={
+                                <ClassCardAdminActions
+                                    yogaClass={yogaClass}
+                                    onDelete={handleDelete}
+                                />
+                            }
+                            key={yogaClass.$id}
+                        />
                     ))
             ) : (
                 <div className="mt-8 flex justify-center">

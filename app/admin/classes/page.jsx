@@ -4,13 +4,16 @@
 import Heading from "/components/Heading";
 import checkAuth from "@/app/actions/checkAuth";
 import getAllTeachers from "@/app/actions/getAllTeachers";
+import deleteClass from "@/app/actions/deleteClass";
 import Link from "next/link";
 import getClassesForDay from "@/app/actions/getClassesForDay";
 import AdminYogaClassesPage from "@/components/AdminYogaClassesPage";
+import ClassCardBase from "@/components/class-cards/ClassCardBase";
+import ClassCardAdminActions from "@/components/class-cards/ClassCardAdminActions";
 
 
 const AdminClassesPage = async () => {
-  const { isAdmin } = await checkAuth();  
+  const { isAdmin } = await checkAuth();
 
   if (!isAdmin) {
     return <p>You are not authorised to view this page.</p>;

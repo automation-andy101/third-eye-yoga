@@ -1,81 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import getTeacherById from "@/app/actions/getTeacherById";
+import { useClassStatus } from "@/app/hooks/useClassStatus";
+import { formatTime, formatTimeEnd } from "@/app/utils/date";
 
-const AdminClassCard = ({ yogaClass }) => {
+
+const ClassCardBase = ({ yogaClass, actions }) => {
     const [time, setTime] = useState("");
-    
-    const now = new Date();
-    const start = new Date(yogaClass.start_at);
-    const end = new Date(start);
-    end.setMinutes(end.getMinutes() + yogaClass.duration);
 
-    const isFinished = end < now;
-    const isOngoing = start <= now && end > now;
-    const isUpcoming = start > now;
+    const status = useClassStatus(yogaClass);
+    const { isFullyBooked, statusLabel, statusClasses } = status;
 
-    const isFullyBooked = !isFinished && yogaClass.booked_count >= yogaClass.capacity;
-
-    const isDisabled = isFullyBooked || isFinished || !yogaClass.is_active;
-    const buttonLabel = 
-        !yogaClass.is_active ? "Cancelled"
-        : isFinished ? "Finished" 
-        : isFullyBooked ? "Fully booked" 
-        : "Book now";
-
-    useEffect(() => {
-        const date = new Date(yogaClass.start_at);
-        setTime(
-            date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-            })
-        );
-    }, [yogaClass.start_at]);
-
-    function formatTime(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // e.g. "18:00"
-    }
-
-    function formatTimeEnd(dateString, durationMinutes) {
-        const date = new Date(dateString);
-        date.setMinutes(date.getMinutes() + durationMinutes);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // e.g. "19:30"
-    }
 
     const bucketId = process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_TEACHERS;
     const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT;
 
-    const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${yogaClass.teacher.image_id}/view?project=${projectId}`;
     const imageSrc = yogaClass.teacher.image_id
                 ? `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${yogaClass.teacher.image_id}/view?project=${projectId}`
                 : "/images/no-image.jpg";
 
-    let statusLabel = null;
-    let statusClasses = "";
-
-    if (!yogaClass.is_active) {
-        statusLabel = "Cancelled";
-        statusClasses = "bg-red-100 text-red-700";
-    } else if (isFinished) {
-        statusLabel = "Completed";
-        statusClasses = "bg-gray-700 text-white";
-    } else if (isOngoing) {
-        statusLabel = "Live";
-        statusClasses = "bg-red-600 text-white";
-    } else {
-        statusLabel = "Scheduled";
-        statusClasses = "bg-green-100 text-green-700";
-    }
-
     return (
         <div className={`relative mt-4 rounded-xl border border-gray-200 bg-white p-5 shadow-sm
             ${isFullyBooked ? "opacity-80" : "hover:shadow-md"}
-
         `}
         >
             <div className="grid grid-cols-[140px_260px_1fr_180px] gap-6 items-start">
@@ -105,9 +52,9 @@ const AdminClassCard = ({ yogaClass }) => {
                     <p>
                         🗓{" "}
                         {new Date(yogaClass.start_at).toLocaleDateString("en-GB", {
-                        weekday: "long",
-                        day: "numeric",
-                        month: "short",
+                            weekday: "long",
+                            day: "numeric",
+                            month: "short",
                         })}
                     </p>
 
@@ -146,18 +93,9 @@ const AdminClassCard = ({ yogaClass }) => {
                             {statusLabel}
                         </span>
                     )}
-
-                    <div className="mt-auto flex gap-3">
-                        <Link
-                            href={`/admin/classes/${yogaClass.$id}/edit`}
-                            className="inline-flex items-center rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
-                        >
-                            Edit
-                        </Link>
-
-                        <button className="inline-flex items-center rounded-md border border-red-300 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50">
-                            Delete
-                        </button>
+                
+                    <div className="mt-auto">
+                        {typeof actions === "function" ? actions(status) : actions}
                     </div>
                 </div>
             </div>    
@@ -165,4 +103,4 @@ const AdminClassCard = ({ yogaClass }) => {
     )
 }
 
-export default AdminClassCard;
+export default ClassCardBase;
