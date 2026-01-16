@@ -89,14 +89,14 @@ const ClassCardBase = ({ yogaClass, actions }) => {
                     )}
 
                     <div className="pt-2 space-y-1">
-                        {/* <p>
+                        <p>
                             🗓{" "}
                             {new Date(yogaClass.start_at).toLocaleDateString("en-GB", {
                                 weekday: "long",
                                 day: "numeric",
                                 month: "short",
                             })}
-                        </p> */}
+                        </p>
 
                         <p>
                             🕒 {formatTime(yogaClass.start_at)} –{" "}

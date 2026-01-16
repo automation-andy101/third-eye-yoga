@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import AdminClassCard from "./AdminClassCardOLD";
+import BookingCard from "/components/BookingCard";
+import ClassCardBase from "./class-cards/ClassCardBase";
+
 
 const AdminDashboardPage = ({ classes, teachers, bookings }) => {
   const totalClassesForCurrentWeek = classes.length;
@@ -27,11 +30,15 @@ const AdminDashboardPage = ({ classes, teachers, bookings }) => {
         <div>
             <h2 className="text-xl font-semibold mb-4">Upcoming Classes This Week</h2>
             {upcomingClasses.length > 0 ? (
-            upcomingClasses.map((yogaClass) => (
-                <AdminClassCard key={yogaClass.$id} yogaClass={yogaClass} />
-            ))
+                upcomingClasses.map((yogaClass) => (
+                    <ClassCardBase 
+                        yogaClass={yogaClass} 
+                        actions={null}
+                        key={yogaClass.$id}  
+                    />
+                ))
             ) : (
-            <p className="text-gray-600">No upcoming classes</p>
+                <p className="text-gray-600">No upcoming classes</p>
             )}
         </div>
 
