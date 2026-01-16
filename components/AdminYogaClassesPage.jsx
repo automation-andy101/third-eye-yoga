@@ -39,16 +39,17 @@ const AdminYogaClassesPage = ({ getClassesForDay }) => {
     return (
         <div>
             {/* Header / Actions */}
-            <div className="mb-2 flex items-center justify-between gap-4">
+            <div className="mb-2 space-y-1 md:space-y-0 md:flex md:items-center md:justify-between md:gap-4">
                 <DatePicker onSelect={fetchClasses} />
 
                 <Link
                     href="/admin/classes/new"
-                    className="inline-flex items-center rounded-lg bg-gray-800 px-6 py-2.5 text-base font-medium text-white hover:bg-gray-700"
+                    className="inline-flex w-full md:w-auto justify-center items-center rounded-lg bg-gray-800 px-6 py-2.5 text-base font-medium text-white hover:bg-gray-700"
                 >
                     + Create Class
                 </Link>
             </div>
+
 
             {/* Display classes */}
             {loading ? (
