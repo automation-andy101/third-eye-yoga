@@ -49,8 +49,6 @@ export default function WeekSchedule({ getClassesForDay }) {
                 <p>Loading...</p>
             ) : classes.length > 0 ? (
                 classes.map((yogaClass) => (
-                    // <ClassCard yogaClass={yogaClass} key={yogaClass.$id} />
-                    // <ClassCardVariation yogaClass={yogaClass} key={yogaClass.$id} />
                     <ClassCardBase 
                         yogaClass={yogaClass} 
                         actions={(status) => (

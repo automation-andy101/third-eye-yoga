@@ -6,11 +6,18 @@ const WeekDatePicker = ({ onSelect }) => {
   const [weekOffset, setWeekOffset] = useState(0);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // Get Monday of the week for a given offset
+  const formatValue = (date) =>
+    date.toISOString().split("T")[0];
+
+  useEffect(() => {
+    onSelect?.(formatValue(selectedDate));
+  }, [selectedDate]);
+
+  // ---------- DESKTOP WEEK LOGIC ----------
   const getWeekStart = (offset) => {
     const today = new Date();
-    const day = today.getDay(); // 0 = Sun, 1 = Mon
-    const diff = day === 0 ? -6 : 1 - day; // make Monday start
+    const day = today.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
     const monday = new Date(today);
     monday.setDate(today.getDate() + diff + offset * 7);
     return monday;
@@ -31,75 +38,80 @@ const WeekDatePicker = ({ onSelect }) => {
       month: "short",
     });
 
-  const formatValue = (date) =>
-    date.toISOString().split("T")[0];
-
-  // Notify parent when selected date changes
-  useEffect(() => {
-    onSelect?.(formatValue(selectedDate));
-  }, [selectedDate]);
-
   return (
-    <div className="space-y-3">
-      {/* Week navigation */}
-      <div className="grid grid-cols-3 items-center gap-4 text-sm">
-        {/* LEFT SLOT */}
-        <div className="justify-self-start">
-          {weekOffset !== 0 && (
-            <button
-              onClick={() => setWeekOffset((w) => w - 1)}
-              className="text-gray-600 hover:text-gray-900"
-            >
-              Previous week
-            </button>
-          )}
-        </div>
-        
-        {/* CENTER SLOT (ALWAYS CENTERED) */}
-        <div className="justify-self-center">
-          <button
-            onClick={() => {
-              setWeekOffset(0);
-              setSelectedDate(new Date());
-            }}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            This week
-          </button>
-        </div>
-
-        {/* RIGHT SLOT */}
-        <div className="justify-self-end">
-          <button
-            onClick={() => setWeekOffset((w) => w + 1)}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            Next week
-          </button>
-        </div>
+    <div className="space-y-4">
+      {/* ===== MOBILE DATE PICKER ===== */}
+      <div className="md:hidden">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Select date
+        </label>
+        <input
+          type="date"
+          value={formatValue(selectedDate)}
+          onChange={(e) => setSelectedDate(new Date(e.target.value))}
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+        />
       </div>
 
-      {/* Days */}
-      <div className="flex gap-2 overflow-x-auto">
-        {days.map((date) => {
-          const isSelected =
-            formatValue(date) === formatValue(selectedDate);
+      {/* ===== DESKTOP WEEK PICKER ===== */}
+      <div className="hidden md:block space-y-3">
+        {/* Week navigation */}
+        <div className="grid grid-cols-3 items-center text-sm">
+          <div className="justify-self-start">
+            {weekOffset !== 0 && (
+              <button
+                onClick={() => setWeekOffset((w) => w - 1)}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Previous week
+              </button>
+            )}
+          </div>
 
-          return (
+          <div className="justify-self-center">
             <button
-              key={date.toISOString()}
-              onClick={() => setSelectedDate(date)}
-              className={`mr-2 w-40 text center px-4 py-3 rounded-lg text-sm font-medium whitespace-nowrap
-                ${
-                  isSelected
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
+              onClick={() => {
+                setWeekOffset(0);
+                setSelectedDate(new Date());
+              }}
+              className="text-gray-600 hover:text-gray-900"
             >
-              {formatLabel(date)}
+              This week
             </button>
-          );
-        })}
+          </div>
+
+          <div className="justify-self-end">
+            <button
+              onClick={() => setWeekOffset((w) => w + 1)}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              Next week
+            </button>
+          </div>
+        </div>
+
+        {/* Days */}
+        <div className="flex gap-2">
+          {days.map((date) => {
+            const isSelected =
+              formatValue(date) === formatValue(selectedDate);
+
+            return (
+              <button
+                key={date.toISOString()}
+                onClick={() => setSelectedDate(date)}
+                className={`px-4 py-3 rounded-lg text-sm font-medium
+                  ${
+                    isSelected
+                      ? "bg-indigo-600 text-white"
+                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  }`}
+              >
+                {formatLabel(date)}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
