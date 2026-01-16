@@ -4,12 +4,14 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "/assets/images/logo_1.png";
-import { FaUser, FaSignInAlt, FaSignOutAlt, FaBuilding } from "react-icons/fa";
+import { FaUser, FaSignInAlt, FaSignOutAlt, FaBuilding, FaBars, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import destroySession from "/app/actions/destroySession";
 import { useAuth } from "/context/authContext";
+import { useState } from "react";
 
 const Header = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const router = useRouter();
     const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin, currentUser } = useAuth();
 
@@ -47,27 +49,6 @@ const Header = () => {
                                     </Link>
 
                                     {isAdmin && (
-                                        // <>
-                                        //     <Link
-                                        //         href="/classes/add"
-                                        //         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                        //     >
-                                        //         Add Class
-                                        //     </Link>
-
-                                        //     <Link
-                                        //         href="/rooms/add"
-                                        //         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                        //     >
-                                        //         Add Teacher
-                                        //     </Link>
-                                        //     <Link
-                                        //         href="/bookings"
-                                        //         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                        //     >
-                                        //         Bookings
-                                        //     </Link>
-                                        // </>
                                         <div className="relative group">
                                             {/* Admin trigger */}
                                             <span className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
@@ -106,73 +87,138 @@ const Header = () => {
                         </div>
 
                         <div className="ml-auto">
-                            <div className="ml-4 flex items-center md:ml-6">
-                                {!isAuthenticated && (
-                                    <>
-                                        <Link
-                                            href="/login"
-                                            className="mr-3 text-gray-800 hover:text-gray-600"
-                                        >
-                                            <FaSignInAlt className="inline mr-1" /> Login
-                                        </Link>
-                                        <Link
-                                            href="/register"
-                                            className="mr-3 text-gray-800 hover:text-gray-600"
-                                        >
-                                            <FaUser className="inline mr-1" /> Register
-                                        </Link>
-                                    </> 
-                                )}
+                            <div className="ml-auto flex items-center md:ml-6">
+                                {/* Desktop auth links */}
+                                <div className="hidden md:flex items-center">
+                                    {!isAuthenticated && (
+                                        <>
+                                            <Link
+                                                href="/login"
+                                                className="mr-3 text-gray-800 hover:text-gray-600"
+                                            >
+                                                <FaSignInAlt className="inline mr-1" /> Login
+                                            </Link>
+                                            <Link
+                                                href="/register"
+                                                className="mr-3 text-gray-800 hover:text-gray-600"
+                                            >
+                                                <FaUser className="inline mr-1" /> Register
+                                            </Link>
+                                        </>
+                                    )}
 
-                                {isAuthenticated && (
-                                    <>
-                                        <Link href="/bookings">
-                                            <FaBuilding className="inline mr-1" /> My Bookings
-                                        </Link>
-                                        <button onClick={handleLogout} className="mx-3 text-gray-800 hover:text-gray-600">
-                                            <FaSignOutAlt className="inline mr-1" /> Sign Out
-                                        </button>
-                                    </>
-                                )}
-                                
+                                    {isAuthenticated && (
+                                        <>
+                                            <Link href="/bookings" className="mr-3 text-gray-800 hover:text-gray-600">
+                                                <FaBuilding className="inline mr-1" /> My Bookings
+                                            </Link>
+                                            <button
+                                                onClick={handleLogout}
+                                                className="text-gray-800 hover:text-gray-600"
+                                            >
+                                                <FaSignOutAlt className="inline mr-1" /> Sign Out
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+
+                                {/* Mobile hamburger */}
+                                <button
+                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    className="md:hidden text-gray-800 focus:outline-none"
+                                    aria-label="Toggle menu"
+                                >
+                                    {isMenuOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                <div className="md:hidden">
-                    <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                        <Link
-                            href="/"
-                            className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                        >
-                            Rooms
-                        </Link>
+                {isMenuOpen && (
+                    <div className="md:hidden border-t border-gray-200 bg-gray-100">
+                        <div className="space-y-1 px-4 py-4">
+                            <Link
+                                href="/"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                            >
+                                Class Schedule
+                            </Link>
 
-                        {isAdmin && (
-                            <>
-                                <Link
-                                    href="/classes/add"
-                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                >
-                                    Add Class
-                                </Link>
-                                <Link
-                                    href="/rooms/add"
-                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                >
-                                    Add Teacher
-                                </Link>
-                                <Link
-                                    href="/bookings"
-                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
-                                >
-                                    Bookings
-                                </Link>
-                            </>
-                        )}
+                            {isAdmin && (
+                                <>
+                                    <Link
+                                        href="/admin/dashboard"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        Admin Dashboard
+                                    </Link>
+
+                                    <Link
+                                        href="/admin/teachers"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        Teachers
+                                    </Link>
+
+                                    <Link
+                                        href="/admin/classes"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        Classes
+                                    </Link>
+                                </>
+                            )}
+
+                            {!isAuthenticated && (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        Login
+                                    </Link>
+
+                                    <Link
+                                        href="/register"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        Register
+                                    </Link>
+                                </>
+                            )}
+
+                            {isAuthenticated && (
+                                <>
+                                    <Link
+                                        href="/bookings"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        My Bookings
+                                    </Link>
+
+                                    <button
+                                        onClick={() => {
+                                            setIsMenuOpen(false);
+                                            handleLogout();
+                                        }}
+                                        className="w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                    >
+                                        Sign Out
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
+
             </header>
     )
 }

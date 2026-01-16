@@ -26,7 +26,7 @@ const ClassCardBase = ({ yogaClass, actions }) => {
             ${isFullyBooked ? "opacity-80" : "hover:shadow-md"}
         `}
         >
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-[140px_1fr_140px] items-start">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-[140px_1fr_160px] items-start">
                 {/* COLUMN 1: Teacher image */}
                 <div className="flex justify-center md:justify-start">
                     <div className="w-32 h-32 overflow-hidden rounded-full">
@@ -141,24 +141,49 @@ const ClassCardBase = ({ yogaClass, actions }) => {
                     </div>
 
                     {/* Desktop Button */}
-                    <div className="hidden md:block mt-auto w-full">
+                    <div className="hidden md:flex mt-auto w-full justify-center gap-3">
                         {typeof actions === "function" ? actions(status) : actions}
                     </div>
                 </div>
             </div>
 
             {isBioOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                    {/* Backdrop click */}
+                <div className="fixed inset-0 z-50">
+                    {/* Backdrop */}
                     <div
-                        className="absolute inset-0"
+                        className="absolute inset-0 bg-black/40"
                         onClick={() => setIsBioOpen(false)}
                     />
 
-                    {/* Modal */}
-                    <div className="relative z-10 w-full max-w-lg rounded-xl bg-white p-6 shadow-xl">
-                        <div className="flex items-start gap-4">
-                            <div className="h-20 w-20 overflow-hidden rounded-full">
+                        {/* Modal */}
+                        <div
+                            className="
+                                fixed inset-0
+                                w-screen h-screen
+                                bg-white
+                                overflow-y-auto
+                                p-6
+
+                                md:inset-auto
+                                md:top-1/2 md:left-1/2
+                                md:-translate-x-1/2 md:-translate-y-1/2
+                                md:w-full md:max-w-lg
+                                md:h-auto
+                                md:rounded-xl
+                                md:shadow-xl
+                            "
+                        >
+                        {/* Close button */}
+                        <button
+                            onClick={() => setIsBioOpen(false)}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                            aria-label="Close"
+                        >
+                            ✕
+                        </button>
+
+                        <div className="mt-8 flex gap-4">
+                            <div className="h-20 w-20 overflow-hidden rounded-full shrink-0">
                                 <Image
                                     src={imageSrc}
                                     alt={yogaClass.teacher.name}
@@ -168,29 +193,19 @@ const ClassCardBase = ({ yogaClass, actions }) => {
                                 />
                             </div>
 
-                            <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-gray-900">
+                            <div>
+                                <h3 className="text-xl font-semibold text-gray-900">
                                     {yogaClass.teacher.name}
                                 </h3>
 
-                                <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                                <p className="mt-3 text-sm text-gray-600 leading-relaxed">
                                     {yogaClass.teacher.bio}
                                 </p>
                             </div>
                         </div>
-
-                        {/* Close */}
-                        <button
-                            onClick={() => setIsBioOpen(false)}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-                            aria-label="Close"
-                        >
-                            ✕
-                        </button>
                     </div>
                 </div>
             )}
-  
         </div>
     )
 }
