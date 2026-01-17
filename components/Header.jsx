@@ -6,7 +6,7 @@ import Link from "next/link";
 import logo from "/assets/images/logo_1.png";
 import { FaUser, FaSignInAlt, FaSignOutAlt, FaBuilding, FaBars, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import destroySession from "/app/actions/destroySession";
+import { logout } from "@/app/actions/logout";
 import { useAuth } from "/context/authContext";
 import { useState } from "react";
 
@@ -14,16 +14,15 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const router = useRouter();
     const { isAuthenticated, setIsAuthenticated, isAdmin, setIsAdmin, currentUser } = useAuth();
+    const { refreshAuth } = useAuth();
 
     const handleLogout = async () => {
-        const { success, error } = await destroySession();
-
-        if (success) {
-            setIsAuthenticated(false);
-            setIsAdmin(false);
+        try {
+            await logout();
+            await refreshAuth(); // 🔥 THIS is what updates the navbar
             router.push("/login");
-        } else {
-            toast.error(error);
+        } catch {
+            toast.error("Failed to logout");
         }
     };
 

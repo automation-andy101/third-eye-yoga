@@ -1,25 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { useAuth } from "/context/authContext";
+import { useAuth } from "@/context/authContext";
 
-const OAuthPage = () => {
-  const router = useRouter();
-  const { refreshAuth } = useAuth();
+export default function OAuthPage() {
+    const router = useRouter();
+    const { refreshAuth } = useAuth();
+    const hasRun = useRef(false);
 
-  useEffect(() => {
-    const finishLogin = async () => {
-      await refreshAuth();
-      toast.success("Logged in with Google");
-      router.push("/");
-    };
+    useEffect(() => {
+        if (hasRun.current) return;
+        
+        hasRun.current = true;
+
+        const finishLogin = async () => {
+            await refreshAuth();
+            toast.success("Logged in with Google");
+            router.replace("/");
+        };
 
     finishLogin();
-  }, []);
+    }, []);
 
   return <p className="text-center mt-20">Signing you in…</p>;
-};
-
-export default OAuthPage;
+}
