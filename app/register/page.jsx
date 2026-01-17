@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import createUser from "../actions/createUser";
 import Link from "next/link";
+import { loginWithGoogle } from "../actions/loginWithGoogle";
+
 
 const RegisterPage = () => {
   const [state, formAction] = useFormState(createUser, {});
@@ -90,6 +92,16 @@ const RegisterPage = () => {
               >
                 Register
               </button>
+
+              <button
+                type="button"
+                onClick={loginWithGoogle}
+                className="flex items-center justify-center gap-3 border rounded px-4 py-2 hover:bg-gray-50"
+              >
+                <img src="/google.svg" alt="Google" className="h-5 w-5" />
+                Sign up with Google
+              </button>
+
 
               <p>
                 Have an account?

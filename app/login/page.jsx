@@ -7,6 +7,7 @@ import { useFormState } from 'react-dom';
 import { toast } from 'react-toastify';
 import createSession from '../actions/createSession';
 import { useAuth } from '/context/authContext';
+import { loginWithGoogle } from "../actions/loginWithGoogle";
 
 const LoginPage = () => {
   const [state, formAction] = useFormState(createSession, {});
@@ -74,21 +75,48 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className='flex flex-col gap-5'>
+          
+          <div className="flex flex-col gap-4">
+            {/* Login */}
             <button
-              type='submit'
-              className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
             >
               Login
             </button>
 
-            <p>
-              No account?
-              <Link href='/register' className='text-blue-500'>
+            {/* Divider */}
+            <div className="relative my-2">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-white px-2 text-gray-500">or</span>
+              </div>
+            </div>
+
+            {/* Google Login */}
+            <button
+              type="button"
+              onClick={loginWithGoogle}
+              className="flex items-center justify-center gap-3 border border-gray-300 rounded px-4 py-2 hover:bg-gray-50 transition"
+            >
+              <img src="/google.svg" alt="Google" className="h-5 w-5" />
+              <span className="font-medium text-gray-700">
+                Continue with Google
+              </span>
+            </button>
+
+            {/* Register */}
+            <p className="text-center text-sm">
+              No account?{" "}
+              <Link href="/register" className="text-blue-500 font-medium">
                 Register
               </Link>
             </p>
           </div>
+
+          
         </form>
       </div>
     </div>
