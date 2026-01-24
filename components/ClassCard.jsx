@@ -7,6 +7,7 @@ import getTeacherById from "@/app/actions/getTeacherById";
 
 const ClassCard = ({ yogaClass }) => {
     const [time, setTime] = useState("");
+    const [clientTime, setClientTime] = useState("");
     
     const now = new Date();
     const start = new Date(yogaClass.start_at);
@@ -27,14 +28,21 @@ const ClassCard = ({ yogaClass }) => {
         : "Book now";
 
     useEffect(() => {
-        const date = new Date(yogaClass.start_at);
-        setTime(
-            date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-            })
-        );
-    }, [yogaClass.start_at]);
+        if (!yogaClass?.start_at) return;
+
+        const startDate = new Date(yogaClass.start_at);
+        const endDate = new Date(startDate.getTime() + (yogaClass.duration || 0) * 60000);
+
+        const formatted = `${startDate.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+        })} – ${endDate.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+        })}`;
+
+        setClientTime(formatted);
+    }, [yogaClass]);
 
     function formatTime(dateString) {
         const date = new Date(dateString);
@@ -112,8 +120,7 @@ const ClassCard = ({ yogaClass }) => {
                     </p>
 
                     <p>
-                        🕒 {formatTime(yogaClass.start_at)} –{" "}
-                        {formatTimeEnd(yogaClass.start_at, yogaClass.duration)}
+                        🕒 {clientTime}
                     </p>
 
                     <p>

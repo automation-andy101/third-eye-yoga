@@ -9,6 +9,24 @@ import { formatTime, formatTimeEnd } from "@/app/utils/date";
 const ClassCardBase = ({ yogaClass, actions }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isBioOpen, setIsBioOpen] = useState(false);
+    const [clientTime, setClientTime] = useState("");
+
+    useEffect(() => {
+        if (!yogaClass?.start_at) return;
+
+        const startDate = new Date(yogaClass.start_at);
+        const endDate = new Date(startDate.getTime() + (yogaClass.duration || 0) * 60000);
+
+        const formatted = `${startDate.toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit",
+            })} – ${endDate.toLocaleTimeString([], {
+                hour: "numeric",
+                minute: "2-digit",
+        })}`;
+
+        setClientTime(formatted);
+    }, [yogaClass]);
 
     const status = useClassStatus(yogaClass);
     const { isFullyBooked, statusLabel, statusClasses } = status;
@@ -99,8 +117,7 @@ const ClassCardBase = ({ yogaClass, actions }) => {
                         </p>
 
                         <p>
-                            🕒 {formatTime(yogaClass.start_at)} –{" "}
-                            {formatTimeEnd(yogaClass.start_at, yogaClass.duration)}
+                            🕒 {clientTime}
                         </p>
 
                         <p>

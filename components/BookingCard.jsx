@@ -1,10 +1,34 @@
 "use client";
 
-import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const BookingCard = ({ booking, onCancel }) => {
   const yogaClass = booking.class;
 
+  const [clientTime, setClientTime] = useState("");
+
+  useEffect(() => {
+    if (!yogaClass?.start_at) return;
+
+    const startDate = new Date(yogaClass.start_at);
+
+    let formatted = startDate.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+
+    // Calculate end time from duration (assume duration in minutes)
+    if (yogaClass?.duration) {
+      const endDate = new Date(startDate.getTime() + yogaClass.duration * 60000);
+      formatted += ` – ${endDate.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+      })}`;
+    }
+
+    setClientTime(formatted);
+  }, [yogaClass]);
+  
   // Safety: class may have been deleted
   if (!yogaClass) {
     return (
@@ -29,14 +53,9 @@ const BookingCard = ({ booking, onCancel }) => {
     month: "short",
   });
 
-  const formattedTime = startDate.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
   return (
     <div
-      className={`rounded-xl border p-5 shadow-sm transition
+      className={`relative rounded-xl border p-5 shadow-sm transition
         ${isCancelled ? "bg-gray-50 border-gray-200" : "bg-white border-gray-200"}
       `}
     >
@@ -52,7 +71,7 @@ const BookingCard = ({ booking, onCancel }) => {
           </p>
 
           <p className="text-sm text-gray-600">
-            🕒 {formattedTime}
+            🕒 {clientTime}
           </p>
 
           {yogaClass.teacher?.name && (
@@ -87,7 +106,15 @@ const BookingCard = ({ booking, onCancel }) => {
           {!isPast && !isCancelled && (
             <button
               onClick={() => onCancel?.(booking.$id)}
-              className="text-sm text-red-600 hover:underline"
+              className="
+                absolute bottom-4 right-4
+                rounded-lg border border-red-600
+                px-4 py-2 text-sm font-medium
+                text-red-600
+                hover:bg-red-50
+                active:scale-[0.98]
+                transition
+              "
             >
               Cancel booking
             </button>
