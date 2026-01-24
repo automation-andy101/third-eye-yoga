@@ -39,7 +39,7 @@ async function getClassBookingsForCurrentWeek() {
       ]
     );
 
-    const totalBookings = getClasses.reduse(
+    const totalBookings = getClasses.reduce(
       (sum, yogaClass) => sum + (yogaClass.booked_count || 0), 0
     );
 
