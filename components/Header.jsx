@@ -43,6 +43,7 @@ const Header = () => {
                                 <div className="ml-10 flex items-baseline space-x-4">
                                     <Link
                                         href="/"
+                                        data-testid="nav-class-schedule-desktop"
                                         className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Class Schedule
@@ -51,7 +52,10 @@ const Header = () => {
                                     {isAdmin && (
                                         <div className="relative group">
                                             {/* Admin trigger */}
-                                            <span className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white">
+                                            <span 
+                                                className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
+                                                data-testid="nav-admin-desktop"
+                                            >
                                                 Admin
                                             </span>
 
@@ -60,6 +64,7 @@ const Header = () => {
                                                 <div className="rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
                                                     <Link
                                                         href="/admin/dashboard"
+                                                        data-testid="nav-admin-dashboard-desktop"
                                                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                     >
                                                         Dashboard
@@ -67,6 +72,7 @@ const Header = () => {
 
                                                     <Link
                                                         href="/admin/teachers"
+                                                        data-testid="nav-admin-teachers-desktop"
                                                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                     >
                                                         Teachers
@@ -74,6 +80,7 @@ const Header = () => {
 
                                                     <Link
                                                         href="/admin/classes"
+                                                        data-testid="nav-admin-classes-desktop"
                                                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                     >
                                                         Classes
@@ -94,12 +101,14 @@ const Header = () => {
                                         <>
                                             <Link
                                                 href="/login"
+                                                data-testid="nav-login-desktop"
                                                 className="mr-3 text-gray-800 hover:text-gray-600"
                                             >
                                                 <FaSignInAlt className="inline mr-1" /> Login
                                             </Link>
                                             <Link
                                                 href="/register"
+                                                data-testid="nav-register-desktop"
                                                 className="mr-3 text-gray-800 hover:text-gray-600"
                                             >
                                                 <FaUser className="inline mr-1" /> Register
@@ -109,11 +118,16 @@ const Header = () => {
 
                                     {isAuthenticated && (
                                         <>
-                                            <Link href="/bookings" className="mr-3 text-gray-800 hover:text-gray-600">
+                                            <Link 
+                                                href="/bookings" 
+                                                className="mr-3 text-gray-800 hover:text-gray-600"
+                                                data-testid="nav-my-bookings-desktop"
+                                            >
                                                 <FaBuilding className="inline mr-1" /> My Bookings
                                             </Link>
                                             <button
                                                 onClick={handleLogout}
+                                                data-testid="nav-signout-desktop"
                                                 className="text-gray-800 hover:text-gray-600"
                                             >
                                                 <FaSignOutAlt className="inline mr-1" /> Sign Out
@@ -125,6 +139,7 @@ const Header = () => {
                                 {/* Mobile hamburger */}
                                 <button
                                     onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    data-testid="nav-toggle-menu-mobile"
                                     className="md:hidden text-gray-800 focus:outline-none"
                                     aria-label="Toggle menu"
                                 >
@@ -141,6 +156,7 @@ const Header = () => {
                             <Link
                                 href="/"
                                 onClick={() => setIsMenuOpen(false)}
+                                data-testid="nav-class-schedule-mobile"
                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                             >
                                 Class Schedule
@@ -151,6 +167,7 @@ const Header = () => {
                                     <Link
                                         href="/admin/dashboard"
                                         onClick={() => setIsMenuOpen(false)}
+                                        data-testid="nav-dashboard-mobile"
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Admin Dashboard
@@ -159,6 +176,7 @@ const Header = () => {
                                     <Link
                                         href="/admin/teachers"
                                         onClick={() => setIsMenuOpen(false)}
+                                        data-testid="nav-teachers-mobile"
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Teachers
@@ -167,6 +185,7 @@ const Header = () => {
                                     <Link
                                         href="/admin/classes"
                                         onClick={() => setIsMenuOpen(false)}
+                                        data-testid="nav-classes-mobile"
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Classes
@@ -179,6 +198,7 @@ const Header = () => {
                                     <Link
                                         href="/login"
                                         onClick={() => setIsMenuOpen(false)}
+                                        data-testid="nav-login-mobile"
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Login
@@ -187,6 +207,7 @@ const Header = () => {
                                     <Link
                                         href="/register"
                                         onClick={() => setIsMenuOpen(false)}
+                                        data-testid="nav-register-mobile"
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Register
@@ -199,6 +220,7 @@ const Header = () => {
                                     <Link
                                         href="/bookings"
                                         onClick={() => setIsMenuOpen(false)}
+                                        data-testid="nav-my-bookings-mobile"
                                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         My Bookings
@@ -209,6 +231,7 @@ const Header = () => {
                                             setIsMenuOpen(false);
                                             handleLogout();
                                         }}
+                                        data-testid="nav-signout-mobile"
                                         className="w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                                     >
                                         Sign Out

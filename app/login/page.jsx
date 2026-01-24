@@ -51,6 +51,7 @@ const LoginPage = () => {
               type='email'
               id='email'
               name='email'
+              data-testid="login-email"
               className='border rounded w-full py-2 px-3'
               autoComplete='email'
               required
@@ -68,6 +69,7 @@ const LoginPage = () => {
               type='password'
               id='password'
               name='password'
+              data-testid="login-password"
               className='border rounded w-full py-2 px-3'
               autoComplete='password'
               required
@@ -77,6 +79,7 @@ const LoginPage = () => {
           <div className='flex flex-col gap-5'>
             <button
               type='submit'
+              data-testid="login-submit-button"
               className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700'
             >
               Login
@@ -84,7 +87,10 @@ const LoginPage = () => {
 
             <p>
               No account?
-              <Link href='/register' className='text-blue-500'>
+              <Link 
+                href='/register' className='text-blue-500'
+                data-testid="register-link"  
+              >
                 Register
               </Link>
             </p>

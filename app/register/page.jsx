@@ -30,26 +30,28 @@ const RegisterPage = () => {
             </h2>
 
             <div className="mb-4">
-              <label htmlFor="name" className="block text-gray-700 font-bold mb-2"
-                >Name</label
-              >
+              <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
+                Name
+              </label>
               <input
                 type="text"
                 id="name"
                 name="name"
+                data-testid="register-name"
                 className="border rounded w-full py-2 px-3"
                 required
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-bold mb-2"
-                >Email</label
-              >
+              <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+                Email
+              </label>
               <input
                 type="email"
                 id="email"
                 name="email"
+                data-testid="register-email"
                 className="border rounded w-full py-2 px-3"
                 required
               />
@@ -63,6 +65,7 @@ const RegisterPage = () => {
                 type="password"
                 id="password"
                 name="password"
+                data-testid="register-password"
                 className="border rounded w-full py-2 px-3"
                 required
               />
@@ -72,12 +75,14 @@ const RegisterPage = () => {
               <label
                 htmlFor="confirm-password"
                 className="block text-gray-700 font-bold mb-2"
-                >Confirm Password</label
+              >
+                  Confirm Password</label
               >
               <input
                 type="password"
                 id="confirm-password"
                 name="confirm-password"
+                data-testid="register-confirm-password"
                 className="border rounded w-full py-2 px-3"
                 required
               />
@@ -86,6 +91,7 @@ const RegisterPage = () => {
             <div className="flex flex-col gap-5">
               <button
                 type="submit"
+                data-testid="register-submit-button"
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
               >
                 Register
@@ -93,7 +99,13 @@ const RegisterPage = () => {
 
               <p>
                 Have an account?
-                <Link href="login.html" className="text-blue-500">Login</Link>
+                <Link 
+                  href="login.html" 
+                  data-testid="login-link"  
+                  className="text-blue-500"
+                >
+                  Login
+                </Link>
               </p>
             </div>
           </form>
