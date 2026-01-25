@@ -156,7 +156,7 @@ const Header = () => {
                     <div className="md:hidden border-t border-gray-200 bg-gray-100">
                         <div className="space-y-1 px-4 py-4">
                             <Link
-                                href="/"
+                                href="/classes"
                                 onClick={() => setIsMenuOpen(false)}
                                 data-testid="nav-class-schedule-mobile"
                                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
