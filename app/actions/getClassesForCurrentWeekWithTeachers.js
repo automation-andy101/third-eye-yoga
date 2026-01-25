@@ -48,9 +48,11 @@ async function getClassesForCurrentWeekWithTeachers() {
        2. Fetch all teachers
     ----------------------------------- */
     const { documents: teachers } = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
-      process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_TEACHERS,
-      [Query.limit(100)]
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE,
+        process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_TEACHERS,
+        [
+            Query.limit(100),
+        ]
     );
 
     /* ----------------------------------
@@ -64,13 +66,15 @@ async function getClassesForCurrentWeekWithTeachers() {
     /* ----------------------------------
        4. Attach teacher to each class
     ----------------------------------- */
-    const classesWithTeachers = classes.map((yogaClass) => ({
-      ...yogaClass,
-      teacher: teacherMap[yogaClass.teacher_id] || null,
+    const classesWithTeachers = classes.map((cls) => ({
+        ...cls,
+        teacher: teacherMap[cls.teacher_id] || null,
     }));
+
 
     return classesWithTeachers;
   } catch (error) {
+    
     console.error("Failed to get classes with teachers for current week", error);
     return [];
   }

@@ -16,6 +16,7 @@ export default function WeekSchedule({ getClassesForDay }) {
 
         try {
             const dayClasses = await getClassesForDay(date);
+            console.log(dayClasses);
             setClasses(dayClasses);
         } catch (err) {
             console.error("Failed to fetch classes:", err);

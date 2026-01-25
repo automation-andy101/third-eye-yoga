@@ -52,6 +52,7 @@ async function getClassesForDay(date) {
         // Revalidate the cache for this path
         revalidatePath('/', 'layout');
 
+        console.log("getClassesForDay - " + JSON.stringify(classesWithTeachers));
         return classesWithTeachers;
 
     } catch (error) {

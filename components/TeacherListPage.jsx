@@ -35,6 +35,7 @@ export default function TeacherListPage({ getAllTeachers }) {
             <div className="mb-6 flex justify-end">
                 <Link
                     href="/admin/teachers/new"
+                    data-testid="create-teacher-button"
                     className="inline-flex items-center rounded-lg bg-gray-800 px-6 py-3 text-base font-medium text-white hover:bg-gray-700"
                 >
                     + Create Teacher
@@ -52,7 +53,10 @@ export default function TeacherListPage({ getAllTeachers }) {
                 </div>
             ) : (
                 <div className="mt-16 flex justify-center">
-                    <p className="text-gray-600">No teachers available</p>
+                    <p 
+                        data-testid="no-teachers-availablae-text"
+                        className="text-gray-600">No teachers available
+                    </p>
                 </div>
             )}
         </div>
