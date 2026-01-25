@@ -116,7 +116,7 @@ const BookingCard = ({ booking, onCancel }) => {
                 transition
               "
             >
-              Cancel booking
+              Cancel
             </button>
           )}
         </div>
