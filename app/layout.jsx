@@ -20,7 +20,8 @@ export default function RootLayout({ children }) {
         <body className={`flex flex-col min-h-screen ${inter.className} `}>
           <Header />
 
-          <main className="mx-auto w-full px-4 py-6 sm:px-6 lg:px-8">
+          {/* <main className="mx-auto w-full px-4 py-6 sm:px-6 lg:px-8"> */}
+          <main>
             {children}
           </main>
 

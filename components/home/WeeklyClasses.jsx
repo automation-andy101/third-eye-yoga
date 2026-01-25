@@ -6,10 +6,6 @@ import WeeklyClassCard from "./WeaklyClassCard";
 
 const WeeklyClasses = async () => {
   const classes = await getClassesForCurrentWeekWithTeachers();
-  // const today = new Date();
-  // const dateString = today.toISOString().split("T")[0]; 
-  // const classes = await getClassesForDay(dateString);
-  console.log(JSON.stringify(classes));
 
   if (!classes.length) return null;
 
